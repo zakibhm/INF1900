@@ -27,44 +27,55 @@ int main()
     DDRA = 0xff ;
     
     DDRA = 0xff ;
+    uint8_t entree = PINC ;
     
     while(true)
     {
-        if(PINC & 0X04)
+        
+        entree = PINC ;
+
+
+        if((entree & 0X04) && !(entree & 0X01) && !(entree & 0X10) )
         {
             del.ambre(&PORTA);
             moteur.avancerMoteur();
         }
 
-        else if(PINC & 0x01)
+        else if((entree & 0x01) && (entree & 0x02) && (entree & 0x04) )
 
         {
             
-            moteur.arreterMoteur();
-            _delay_ms(200); 
-            moteur.reculerMoteur();
-            _delay_ms(500);
-            //moteur.avancerMoteur();
+            // for(uint8_t i=0;i<16;i++)
+            // {
+            //     del.rouge(&PORTA);
+            //     _delay_ms(500);
+            //     del.vert(&PORTA);
+            //     _delay_ms(500);
+            // }
+            
             moteur.tournerDroite90();
         }
 
-        else if(PINC & 0x10)
+        else if((entree & 0x10) && (entree & 0x08) && (entree & 0x04) )
         {
-            moteur.arreterMoteur();
-            _delay_ms(200);
-            moteur.reculerMoteur();
-            _delay_ms(500);
-            //moteur.avancerMoteur();
+            // for(uint8_t i=0;i<16;i++)
+            // {
+            //     del.rouge(&PORTA);
+            //     _delay_ms(500);
+            //     del.vert(&PORTA);
+            //     _delay_ms(500);
+            // }
             moteur.tournerGauche90();
+            
         }
 
-        else if(PINC & 0x03)
+        else if((entree & 0x03) && !(entree & 0x0C))
         {
             del.vert(&PORTA);
             moteur.tournerGauche();
         }
 
-        else if(PINC & 0x0C)
+        else if((entree & 0x0C) &&!(entree & 0x03))
         {
             del.rouge(&PORTA);
             moteur.tournerDroite();
