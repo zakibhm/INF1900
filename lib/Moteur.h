@@ -23,6 +23,10 @@ public :
 
     void tournerGauche90();
 
+    void tournerGauche();
+
+    void tournerDroite();
+
 private:
     void changementVitesse(uint16_t duree1, uint16_t duree2);
     

@@ -25,11 +25,9 @@ int main()
 {
     DDRC = 0x00;
     DDRA = 0xff ;
-    //del.rouge(&PORTA);
+    
     DDRA = 0xff ;
-    // _delay_ms(4000);
-    // moteur.avancerMoteur();
-    // _delay_ms(4000);
+    
     while(true)
     {
         if(PINC & 0X04)
@@ -37,16 +35,39 @@ int main()
             del.ambre(&PORTA);
             moteur.avancerMoteur();
         }
+
+        else if(PINC & 0x01)
+
+        {
+            
+            moteur.arreterMoteur();
+            _delay_ms(200); 
+            moteur.reculerMoteur();
+            _delay_ms(500);
+            //moteur.avancerMoteur();
+            moteur.tournerDroite90();
+        }
+
+        else if(PINC & 0x10)
+        {
+            moteur.arreterMoteur();
+            _delay_ms(200);
+            moteur.reculerMoteur();
+            _delay_ms(500);
+            //moteur.avancerMoteur();
+            moteur.tournerGauche90();
+        }
+
         else if(PINC & 0x03)
         {
             del.vert(&PORTA);
-            moteur.tournerGauche90();
+            moteur.tournerGauche();
         }
 
         else if(PINC & 0x0C)
         {
             del.rouge(&PORTA);
-            moteur.tournerDroite90();
+            moteur.tournerDroite();
         }
         else
         {
