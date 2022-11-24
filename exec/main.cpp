@@ -3,6 +3,7 @@
 #include <util/delay.h> 
 #include <avr/interrupt.h>
 #include "Del.h"
+#include "can.h"
 #include "debug.h"
 #include "Sonnerie.h"
 #include "Minuterie.h" 
@@ -13,11 +14,12 @@
 #include <avr/interrupt.h>
 #include <memoire_24.h>
 
-
+volatile uint8_t gdistance ;
 Moteur moteur;
 Memoire24CXXX memoire ;
 Del del ;
 Son sonnerie ;
+can convertisseurAnalogique ;
 
 double frequence[37]=
 {
@@ -32,24 +34,46 @@ double frequence[37]=
 void detectionBarreDeFer()
 {
     gdistance = (convertisseurAnalogique.lecture(0x00) >>2);
+    //Uart uart;
+    //uart.transmissionUART(gdistance);
+    //_delay_ms(500);
     switch (gdistance)
     {
-        case  0x38 ... 0x45:
+
+        
+
+        case 0x22 ... 0x25: // [43cm - 53cm] loins 
             //moteur.arreterMoteur();
-            sonnerie.jouerSon(frequence[36]);
-            _delay_ms(1000);
-            sonnerie.arreterSon();
+            //sonnerie.jouerSon(frequence[0]);
+            //_delay_ms(1000);
+            //sonnerie.arreterSon();
+
+            del.rouge(&PORTB);
+
             break;
 
-        case 0x1C ... 0x22:
-            //moteur.arreterMoteur();
-            sonnerie.jouerSon(frequence[0]);
-            _delay_ms(1000);
-            sonnerie.arreterSon();
+        case  0x50 ... 0x59: // [11cm - 21cm] proche
+            moteur.arreterMoteur();
+            del.vert(&PORTB);
+
+            
+            //sonnerie.jouerSon(frequence[35]);
+            //_delay_ms(1000);
+            // sonnerie.arreterSon();
+            // moteur.avancerMoteur();
             break;
 
+        // case 0x6C ... 0x93 : 
+        //     del.eteint(&PORTB);
+        //     break;
+        // case 0x00 ... 0x13 :
+        //     del.eteint(&PORTB);
+        //     break;
         default:
-            moteur.avancerMoteur();
+            del.eteint(&PORTB);
+            // sonnerie.arreterSon() ;
+            // moteur.avancerMoteur();
+            break;
 
 
     }
@@ -57,27 +81,27 @@ void detectionBarreDeFer()
 
 int main()
 {
-    DDRC = 0x00;
-    DDRA = 0xff ;
+    DDRA = 0x00;
+    DDRB = 0xff;
+    DDRD = 0xff ;
     
     uint8_t entree = PINC ;
     //moteur.avancerMoteur();
-    //_delay_ms(10000);
+    _delay_ms(10000);
     //moteur.tournerDroite90();
     //moteur.tournerGauche90();
-
-
 
     
     while(true)
     {
         
+        detectionBarreDeFer();
         entree = PINC ;
 
 
         if((entree & 0X04) && !(entree & 0X01) && !(entree & 0X10) )
         {
-            //del.ambre(&PORTA);
+            
             moteur.avancerMoteur();
             del.eteint(&PORTA);
         }
