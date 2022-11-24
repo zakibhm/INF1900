@@ -30,7 +30,7 @@ public :
 private:
     void changementVitesse(uint16_t duree1, uint16_t duree2);
     
-    const uint8_t min_ = 90;
+    const uint8_t min_ = 57;
     const uint8_t max_ = 0;
 
 };
