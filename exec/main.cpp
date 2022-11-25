@@ -34,33 +34,33 @@ double frequence[37]=
 void detectionBarreDeFer()
 {
     gdistance = (convertisseurAnalogique.lecture(0x00) >>2);
-    //Uart uart;
-    //uart.transmissionUART(gdistance);
-    //_delay_ms(500);
+    Uart uart;
+    uart.transmissionUART(gdistance);
+    _delay_ms(500);
     switch (gdistance)
     {
 
         
 
-        case 0x22 ... 0x25: // [43cm - 53cm] loins 
-            //moteur.arreterMoteur();
-            //sonnerie.jouerSon(frequence[0]);
-            //_delay_ms(1000);
-            //sonnerie.arreterSon();
+        case 0x15 ... 0x1c: // [43cm - 53cm] loins 
+            moteur.arreterMoteur();
+            sonnerie.jouerSon(frequence[0]);
+            _delay_ms(1000);
+            sonnerie.arreterSon();
 
             del.rouge(&PORTB);
 
             break;
 
-        case  0x50 ... 0x59: // [11cm - 21cm] proche
+        case  0x40 ... 0x5c: // [11cm - 21cm] proche
             moteur.arreterMoteur();
             del.vert(&PORTB);
 
             
-            //sonnerie.jouerSon(frequence[35]);
-            //_delay_ms(1000);
-            // sonnerie.arreterSon();
-            // moteur.avancerMoteur();
+            sonnerie.jouerSon(frequence[35]);
+            _delay_ms(1000);
+            sonnerie.arreterSon();
+            moteur.avancerMoteur();
             break;
 
         // case 0x6C ... 0x93 : 
@@ -71,8 +71,8 @@ void detectionBarreDeFer()
         //     break;
         default:
             del.eteint(&PORTB);
-            // sonnerie.arreterSon() ;
-            // moteur.avancerMoteur();
+            sonnerie.arreterSon() ;
+            moteur.avancerMoteur();
             break;
 
 
@@ -86,66 +86,158 @@ int main()
     DDRD = 0xff ;
     
     uint8_t entree = PINC ;
+    //_delay_ms(5000) ;
     //moteur.avancerMoteur();
-    _delay_ms(10000);
-    //moteur.tournerDroite90();
+    //_delay_ms(10000);
+    moteur.tournerDroite90();
     //moteur.tournerGauche90();
-
-    
-    while(true)
+    moteur.tournerDroite();
+    _delay_ms(10000);
+    while (true)
     {
-        
-        detectionBarreDeFer();
         entree = PINC ;
-
-
-        if((entree & 0X04) && !(entree & 0X01) && !(entree & 0X10) )
+        entree &= 0x1f & entree ;
+        detectionBarreDeFer();
+    
+        switch (entree)
         {
+                case 0b00000001 :
+                    moteur.tournerGauche();
+                    break;
+            case 0b00000010 :
+                moteur.tournerGauche();
+                break ;
+            case 0b00000011 :
+                moteur.tournerGauche();
+                break;
+
+            case 0b00001000 :
+                moteur.tournerDroite();
+                break;
+
+            case 0b000010000 :
+                moteur.tournerDroite();
+                break;
+
+            case 0b00011000 :
+                moteur.tournerDroite();
+                break;
+
+            case 0b00000111 :
+                _delay_ms(300);
+                entree = PINC ;
+                entree &= 0x1f & entree ;
+                if (entree == 0b00011111 )
+                    moteur.arreterMoteur();
+                    
+                
+                else {
+                    moteur.avancerMoteur();
+                    _delay_ms(170);
+                    while (!(entree & 0x04))
+                    {
+                        moteur.tournerGauche90();
+                        entree = PINC ;
+                        entree &= 0x1f & entree ;
+                    }
+                    
+                }
+                    
+                break;          
+                        
+
+            case 0b00001111 : 
+
+                _delay_ms(300);
+                entree = PINC ;
+                entree &= 0x1f & entree ;
+                if (entree == 0b00011111 )
+                    moteur.arreterMoteur();
+                    
+                
+                else {
+                    moteur.avancerMoteur();
+                    _delay_ms(170);
+                    while (!(entree & 0x04))
+                    {
+                        moteur.tournerGauche90();
+                        entree = PINC ;
+                        entree &= 0x1f & entree ;
+                    }
+                }
+                    
+                break;
+
+            case 0b00011100 : 
+
+                _delay_ms(300);
+                entree = PINC ;
+                entree &= 0x1f & entree ;
+                if (entree == 0b00011111 ){
+                    moteur.arreterMoteur();
+                    }
+
+                else {
+                    moteur.avancerMoteur();
+                    _delay_ms(250);
+                    while (!(entree & 0x04))
+                    {
+                        moteur.tournerDroite90();
+                        entree = PINC ;
+                        entree &= 0x1f & entree ;
+                    }
+                }
+                    
+                    
+                break;
+
+            case 0b00011110 : 
+                _delay_ms(300);
+                entree = PINC ;
+                entree &= 0x1f & entree ;
+                if (entree == 0b00011111 ){
+                    moteur.arreterMoteur();
+                    }
+
+                else {
+                    moteur.avancerMoteur();
+                    _delay_ms(250);
+                    while (!(entree & 0x04))
+                    {
+                        moteur.tournerDroite90();
+                        entree = PINC ;
+                        entree &= 0x1f & entree ;
+                    }
+                }
+                    
+                    
+                break;
+
+            case 0b00000100 :
+                moteur.avancerMoteur();
+                break;
+
+            case 0b00001110 :
+                moteur.avancerMoteur();
+                break;
+
+            case 0b00000110 :
+                moteur.avancerMoteur();
+                break;
+
+            case 0b00001100 : 
+                moteur.avancerMoteur();
+                break;
+
+            case 0b00011111: 
+                moteur.arreterMoteur();
+                break;
             
-            moteur.avancerMoteur();
-            del.eteint(&PORTA);
+            default:
+                moteur.arreterMoteur();
+                break;
         }
 
-        else if( ((entree & 0x01) && (entree & 0x02) && (entree & 0x04) && !(entree & 0x08) && !(entree & 0x10)) ||   ((entree & 0x01) && (entree & 0x02) && (entree & 0x04) && (entree & 0x08) && !(entree & 0x10)))
-
-        {
-            del.vert(&PORTA);
-            moteur.tournerGauche90();
-        }
-
-        else if( ((entree & 0x10) && (entree & 0x08) && (entree & 0x04) && !(entree & 0x01) && !(entree & 0x02) )   ||   ((entree & 0x10) && (entree & 0x08) && (entree & 0x04) && (entree & 0x02) && !(entree & 0x01) )  )
-        {
-            
-            del.rouge(&PORTA);
-            moteur.tournerDroite90();
-            
-            
-        }
-
-
-        else if((entree & 0x03) && !(entree & 0x0C))
-        {
-            del.eteint(&PORTA);
-            moteur.tournerGauche();
-        }
-
-        else if((entree & 0x0C) &&!(entree & 0x03))
-        {
-            
-            del.eteint(&PORTA);
-            moteur.tournerDroite();
-        }
-
-        else if ((entree & 0x10) && (entree & 0x08) && (entree & 0x04) && (entree & 0x02) && (entree & 0x01))
-        {
-            del.eteint(&PORTA);
-            moteur.arreterMoteur();
-        }
-        else
-        {
-            del.eteint(&PORTA);
-            moteur.arreterMoteur();
-        }
     }
     
     return 0;
