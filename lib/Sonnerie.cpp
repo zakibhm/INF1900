@@ -7,7 +7,7 @@ Son::Son()
     DDRD |= (1<<PD7) | (1 << PD6);
     PORTD &= ~(1<<PD6);
     TCCR2A |= (1<< WGM21) | (1<<COM2A0);//mode CTC
-    TCCR2B |= (1<<CS21) | (1<<CS22) ;// prescalaire de 256
+    TCCR2B |= (1<<CS22) ;// prescalaire de 256
     TCNT2 =0 ;
 }
 

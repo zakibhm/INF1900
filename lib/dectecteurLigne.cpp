@@ -1,10 +1,10 @@
 #include "detecteurLigne.h"
 
 
-
 DetecteurLigne::DetecteurLigne() 
 {
     DDRC = modeEntree;
+    DDRB = 0xff ;
 }
 
 
@@ -12,10 +12,19 @@ DetecteurLigne::DetecteurLigne()
 DetecteurLigne::~DetecteurLigne()
 {}
 
+
+
+
 void DetecteurLigne::masquerEntree()
 {
     entree = PINC ;
     entree &= 0x1f & entree ;
+}
+
+
+bool DetecteurLigne::getDoublechemin()
+{
+    return doubleChemin ;
 }
 
 bool DetecteurLigne::getPoint_S()
@@ -29,9 +38,11 @@ bool DetecteurLigne::getPoint_B()
 }
 
 
-void DetecteurLigne::dectcterLigne()
+void DetecteurLigne::detecterLigne()
 
-{ 
+{   
+    Son son ;
+    //del.rouge(&PORTB);
     masquerEntree();
     switch (entree)
         {
@@ -64,7 +75,9 @@ void DetecteurLigne::dectcterLigne()
                 break;
 
             case 0b00001110 :
+                del.rouge(&PORTB);
                 moteur.avancerMoteur();
+                doubleChemin = true ;
                 break;
 
             case 0b00000110 :
@@ -80,10 +93,53 @@ void DetecteurLigne::dectcterLigne()
                 break;
 
 
-
-
-            case 0b00000111 :
+            case 0b00011011 :
+                //del.rouge(&PORTB);
+                son.jouerSon(110) ;
                 _delay_ms(300);
+                son.arreterSon();
+                doubleChemin = true ;
+                break;
+            case 0b00011101 :
+                //del.rouge(&PORTB);
+                son.jouerSon(110) ;
+                _delay_ms(300);
+                son.arreterSon();
+                doubleChemin = true ;
+                break;
+            case 0b00010111 :
+                //del.rouge(&PORTB);
+                son.jouerSon(110) ;
+                _delay_ms(300);
+                son.arreterSon();
+                doubleChemin = true ;
+                break;
+            case 0b00010011 :
+                //del.rouge(&PORTB);
+                son.jouerSon(110) ;
+                _delay_ms(300);
+                son.arreterSon();
+                doubleChemin = true ;
+                break;
+            case 0b00011001 :
+                //del.rouge(&PORTB);
+                son.jouerSon(110) ;
+                _delay_ms(300);
+                son.arreterSon();
+                doubleChemin = true ;
+                break;
+            
+            case 0b00010001 :
+                //del.rouge(&PORTB);
+                son.jouerSon(110) ;
+                _delay_ms(300);
+                son.arreterSon();
+                doubleChemin = true ;
+                break ;
+                    
+            case 0b0000111 : 
+                del.rouge(&PORTB);
+                _delay_ms(250);
                 masquerEntree();
 
                 if ((entree == 0b00011111) && (point_B_)) // Point S
@@ -97,6 +153,8 @@ void DetecteurLigne::dectcterLigne()
                     moteur.arreterMoteur();
                     point_B_ = true ;
                 }
+
+                
                 
                 else {
                     moteur.avancerMoteur();
@@ -114,8 +172,8 @@ void DetecteurLigne::dectcterLigne()
                         
 
             case 0b00001111 : 
-
-                _delay_ms(300);
+                
+                _delay_ms(250);
                 masquerEntree();
 
                 if ((entree == 0b00011111) && (point_B_)) // Point S
@@ -129,6 +187,7 @@ void DetecteurLigne::dectcterLigne()
                     moteur.arreterMoteur();
                     point_B_ = true ;
                 }
+
                 
                 else {
                     moteur.avancerMoteur();
@@ -145,8 +204,8 @@ void DetecteurLigne::dectcterLigne()
                 break;  
 
             case 0b00011100 : 
-
-                _delay_ms(300);
+                del.rouge(&PORTB);
+                _delay_ms(250);
                 masquerEntree();
 
                 if ((entree == 0b00011111) && (point_B_)) // Point S
@@ -155,11 +214,18 @@ void DetecteurLigne::dectcterLigne()
                     point_S_ = true ;
                 }
 
+                else if(entree == 0b00000000) 
+                {
+                    doubleChemin = true ;
+                }
+
                 else if ( (entree == 0b00011111) && !(point_B_) ) // point B
                 {
                     moteur.arreterMoteur();
                     point_B_ = true ;
                 }
+
+                
                 
                 else {
                     moteur.avancerMoteur();
@@ -176,7 +242,7 @@ void DetecteurLigne::dectcterLigne()
                 break;  
 
             case 0b00011110 : 
-                _delay_ms(300);
+                _delay_ms(250);
                 masquerEntree();
 
                 if ((entree == 0b00011111) && (point_B_)) // Point S

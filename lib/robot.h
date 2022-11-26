@@ -8,6 +8,7 @@
 #include "Del.h"
 #include "DetecteurDistance.h"
 #include "detecteurLigne.h"
+#include <avr/interrupt.h>
 
 
 class Robot {
@@ -22,9 +23,15 @@ public :
 
     void partieC();
 
-private :
+    void partirMinuterie();
 
+    void initialisation( void );
+
+private :
+    int* retournerTab() ;
     DetecteurDistance detecteurDistance_ ;
     DetecteurLigne detecteurLigne_ ;
+    Moteur moteur_ ;
+    int duree = 7500;
 
 };

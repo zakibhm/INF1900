@@ -17,7 +17,7 @@ public :
 
     ~DetecteurLigne();
 
-    void dectcterLigne();
+    void detecterLigne();
 
     bool getMoteurArrete();
 
@@ -27,17 +27,22 @@ public :
 
     bool getPoint_B() ;
 
+    bool getDoublechemin();
+
 private :
 
 
     void masquerEntree();
     const uint8_t modeEntree = 0x00 ;
     Moteur moteur ;
+    Del del ;
     bool point_S_ =false;
     bool point_B_ = false;
     const uint8_t masque = 0x1f ;
     uint8_t entree ;
+    bool doubleChemin = false ;
 
+    uint8_t virage = 0 ;
 
 
 

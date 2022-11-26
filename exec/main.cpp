@@ -246,13 +246,45 @@
 
 int main()
 {
-    DetecteurLigne detecteurLigne ;
+    // DetecteurLigne detecteurLigne_ ;
+    // while (!(detecteurLigne_.getPoint_B()))
+    // {
+    //     //detecteurDistance_.detecterBar();
+    //     detecteurLigne_.detecterLigne();
 
-    detecteurLigne.dectcterLigne();
+    // }
+    // int tableau[3]= {1,2,1} ;
+    // enum class Partie{barriere_1,barriere_2,barriere_3,fin} ;
+    // Partie partieCourante = Partie::barriere_1 ;
+    // Del del ;
+    // while(!(detecteurLigne_.getPoint_S()))
+    // {
+        
+    //     switch (partieCourante)
+    //     {
+    //     case Partie::barriere_1 :
+    //         del.rouge(&PORTB);
+    //         detecteurLigne_.detecterLigne();
+    //         break ;
+    //     default :
+    //         break ;
+    //     }
+    // }
+    Robot robot ;
+    //robot.pariteA();
+    Son son ;
+    
+    son.arreterSon();
+    //robot.partieB();
+    DetecteurLigne dec ;
+    Del del ;
+    //del.rouge(&PORTB);
+    while (true)
+    {
+        //del.rouge(&PORTB);
+        dec.detecterLigne();
+    }
 
-
-    Robot robot;
-    robot.pariteA();
     return 0 ;
 }
 
