@@ -15,6 +15,8 @@ public :
 
     void avancerMoteur();
 
+    void avancerMoteur(uint16_t duree1, uint16_t duree2);
+
     void reculerMoteur();
 
     void arreterMoteur();
@@ -23,9 +25,9 @@ public :
 
     void tournerGauche90();
 
-    void tournerGauche();
+    void tournerGauche(uint16_t duree1, uint16_t duree2);
 
-    void tournerDroite();
+    void tournerDroite(uint16_t duree1, uint16_t duree2);
 
 private:
     void changementVitesse(uint16_t duree1, uint16_t duree2);

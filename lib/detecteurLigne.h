@@ -19,6 +19,8 @@ public :
 
     void detecterLigne();
 
+    void detecterLigne2();
+
     bool getMoteurArrete();
 
     void setMoteurArrete(bool valeure);
@@ -31,7 +33,8 @@ public :
 
 private :
 
-
+     
+    
     void masquerEntree();
     const uint8_t modeEntree = 0x00 ;
     Moteur moteur ;
@@ -41,10 +44,13 @@ private :
     const uint8_t masque = 0x1f ;
     uint8_t entree ;
     bool doubleChemin = false ;
-
-    uint8_t virage = 0 ;
-
-
+    // void lireCapteur() ;
+    // uint8_t capteur1 = (PINC & 16);
+    // uint8_t capteur2 = (PINC & 8) ;
+    // uint8_t capteur3 = (PINC & 4) ;
+    // uint8_t capteur4 = (PINC & 2) ;
+    // uint8_t capteur5 = (PINC & 1) ;
+    // uint8_t delCompteur = 0 ;
 
 
 };

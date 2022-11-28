@@ -278,6 +278,9 @@ int main()
     //robot.partieB();
     DetecteurLigne dec ;
     Del del ;
+    Moteur moteur ;
+    //moteur.avancerMoteur();
+    //_delay_ms(10000);
     //del.rouge(&PORTB);
     while (true)
     {
