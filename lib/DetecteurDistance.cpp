@@ -23,7 +23,11 @@ int* DetecteurDistance::getTabBarrieres()
 
 
 void DetecteurDistance::detecterBar(){
+    // int moyenne,somme = 0 ;
+    // for(int i =0;i<100;i++)
+    // {
 
+    // }
     gdistance = (convertisseurAnalogique.lecture(0x00) >>2);
     //Uart uart;
     //uart.transmissionUART(gdistance);
@@ -33,7 +37,7 @@ void DetecteurDistance::detecterBar(){
 
         
 
-        case 0x15 ... 0x1c: // [43cm - 53cm] loin
+        case 0x15 ... 0x2c: // [43cm - 53cm] loin //0x15 0x1C
             moteur.arreterMoteur();
             sonnerie.jouerSon(frequence[0]);
             _delay_ms(1000);
@@ -44,7 +48,7 @@ void DetecteurDistance::detecterBar(){
             conteurBarr++;
             break;
 
-        case  0x40 ... 0x5c: // [11cm - 21cm] proche
+        case  0x5a ... 0x73: // [11cm - 21cm] proche 0x40 0x5c
             moteur.arreterMoteur();
             del.vert(&PORTB);
 

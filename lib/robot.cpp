@@ -60,8 +60,8 @@ void Robot::pariteA()
 {
     while (!(detecteurLigne_.getPoint_B()))
     {
-        //detecteurDistance_.detecterBar();
-        detecteurLigne_.detecterLigne();
+        detecteurDistance_.detecterBar();
+        detecteurLigne_.detecterLigne("PartieA");
 
     }
 }
@@ -82,7 +82,7 @@ void Robot::partieB()
         {
         case Partie::barriere_1 :
             del.rouge(&PORTB);
-            detecteurLigne_.detecterLigne();
+            detecteurLigne_.detecterLigne("PartieB");
             if (detecteurLigne_.getDoublechemin() )
             {
                 partirMinuterie();
@@ -102,7 +102,7 @@ void Robot::partieB()
             break;
         
         case Partie::barriere_2 :
-            detecteurLigne_.detecterLigne();
+            detecteurLigne_.detecterLigne("PartieB");
             if(gMinuterieExpiree)
             {
                 if(tableau[1] == 1)
@@ -138,7 +138,7 @@ void Robot::partieB()
 
 
         case Partie::barriere_3 :
-            detecteurLigne_.detecterLigne();
+            detecteurLigne_.detecterLigne("PartieB");
             if (detecteurLigne_.getDoublechemin() )
             {
                 if(tableau[0] == 1) 
@@ -159,7 +159,7 @@ void Robot::partieB()
             break;
 
         case Partie::fin :
-            detecteurLigne_.detecterLigne();
+            detecteurLigne_.detecterLigne("PartieB");
             break;
 
 

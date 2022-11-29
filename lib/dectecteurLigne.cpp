@@ -28,20 +28,6 @@ bool DetecteurLigne::getDoublechemin()
 }
 
 
-// void DetecteurLigne::lireCapteur()
-// {
-//     delCompteur = 0 ;
-//     capteur1 = (PINC & 16);
-//     if(capteur1)    {delCompteur++ ; }
-//     capteur2 = (PINC & 8) ;
-//     if(capteur2)    {delCompteur++ ; }
-//     capteur3 = (PINC & 4) ;
-//     if(capteur3)    {delCompteur++ ; }
-//     capteur4 = (PINC & 2) ;
-//     if(capteur4)    {delCompteur++ ; }
-//     capteur5 = (PINC & 1) ;
-//     if(capteur5)    {delCompteur++ ; }
-// }
 
 
 bool DetecteurLigne::getPoint_S()
@@ -54,77 +40,9 @@ bool DetecteurLigne::getPoint_B()
     return point_B_ ;
 }
 
-// void DetecteurLigne::detecterLigne2()
 
-// {
-//     lireCapteur();
-//     switch (delCompteur)
-//     {
-//     case 1 :
-//         if(capteur1)
-//         {
-//             moteur.tournerDroite();
-//         }
-//         else if (capteur2)
-//         {
-//             moteur.tournerDroite();
-//         }
-//         else if (capteur3)
-//         {
-//             moteur.avancerMoteur();
-//         }
 
-//         else if (capteur4)
-//         {
-//             moteur.tournerGauche();
-//         }
-//         else if (capteur5)
-//         {
-//             moteur.tournerGauche();
-//         }
-//         break;
-    
-//     case 2 :
-//         if(capteur4 && capteur3)
-//         {
-//             moteur.avancerMoteur() ;
-//         }
-
-//         else if (capteur5 && capteur3)
-//         {
-//             moteur.avancerMoteur() ;
-//         }
-
-//         else if (capteur1 && capteur2)
-//         {
-//             moteur.tournerDroite();
-//         }
-//         else if(capteur5 && capteur4)
-//         {
-//             moteur.tournerGauche();
-//         }
-
-//     case 3 :
-//         if(capteur1 && capteur2 && capteur3 )
-//         {
-//             moteur.tournerDroite90() ;
-//         }
-//         else if (capteur3 && capteur4 && capteur5)
-//         {
-//             moteur.tournerGauche90() ;
-//         }
-
-//         else if (capteur2 && capteur3 && capteur4 )
-//         {
-//             moteur.avancerMoteur();
-//         }
-//     default:
-//         break;
-//     }
-
-// }
-
-void DetecteurLigne::detecterLigne()
+void DetecteurLigne::detecterLigne(char* partie)
 
 {   
     Son son ;
@@ -132,7 +50,15 @@ void DetecteurLigne::detecterLigne()
     switch (entree)
         {
             case 0b00000001 :
-                moteur.tournerGauche(150,115);
+                while (true)
+                    {
+                        moteur.tournerGauche90();
+                        entree = PINC ;
+                        entree &= 0x1f & entree ;
+                        if(entree & 0x04)
+                            break ;
+                    }
+                //moteur.tournerGauche(150,115);
                 break;
 
             case 0b00000010 :
@@ -140,7 +66,15 @@ void DetecteurLigne::detecterLigne()
                 break ;
 
             case 0b00000011 :
-                moteur.tournerGauche(145,115);
+                while (true)
+                    {
+                        moteur.tournerGauche90();
+                        entree = PINC ;
+                        entree &= 0x1f & entree ;
+                        if(entree & 0x04)
+                            break ;
+                    }
+                //moteur.tournerGauche(145,115);
                 break;
 
             case 0b00001000 :
@@ -148,11 +82,27 @@ void DetecteurLigne::detecterLigne()
                 break;
 
             case 0b000010000 :
-                moteur.tournerDroite(115,150);
+                while (true)
+                    {
+                        moteur.tournerDroite90();
+                        entree = PINC ;
+                        entree &= 0x1f & entree ;
+                        if(entree & 0x04)
+                            break ;
+                    }
+                //moteur.tournerDroite(115,150);
                 break;
 
             case 0b00011000 :
-                moteur.tournerDroite(115,145);
+                while (true)
+                        {
+                            moteur.tournerDroite90();
+                            entree = PINC ;
+                            entree &= 0x1f & entree ;
+                            if(entree & 0x04)
+                                break ;
+                        }
+                //moteur.tournerDroite(115,145);
                 break;
 
             case 0b00000100 :
@@ -179,35 +129,35 @@ void DetecteurLigne::detecterLigne()
 
 
             case 0b00011011 :
-                //del.rouge(&PORTB);
+                
                 son.jouerSon(110) ;
                 _delay_ms(300);
                 son.arreterSon();
                 doubleChemin = true ;
                 break;
             case 0b00011101 :
-                //del.rouge(&PORTB);
+                
                 son.jouerSon(110) ;
                 _delay_ms(300);
                 son.arreterSon();
                 doubleChemin = true ;
                 break;
             case 0b00010111 :
-                //del.rouge(&PORTB);
+                
                 son.jouerSon(110) ;
                 _delay_ms(300);
                 son.arreterSon();
                 doubleChemin = true ;
                 break;
             case 0b00010011 :
-                //del.rouge(&PORTB);
+                
                 son.jouerSon(110) ;
                 _delay_ms(300);
                 son.arreterSon();
                 doubleChemin = true ;
                 break;
             case 0b00011001 :
-                //del.rouge(&PORTB);
+                
                 son.jouerSon(110) ;
                 _delay_ms(300);
                 son.arreterSon();
@@ -215,7 +165,7 @@ void DetecteurLigne::detecterLigne()
                 break;
             
             case 0b00010001 :
-                //del.rouge(&PORTB);
+                
                 son.jouerSon(110) ;
                 _delay_ms(300);
                 son.arreterSon();
@@ -227,13 +177,13 @@ void DetecteurLigne::detecterLigne()
                 _delay_ms(250);
                 masquerEntree();
 
-                if ((entree == 0b00011111) && (point_B_)) // Point S
+                if ((entree == 0b00011111) && partie == "PartieB") // Point S
                 {
                     moteur.avancerMoteur();
                     point_S_ = true ;
                 }
 
-                else if ( (entree == 0b00011111) && !(point_B_) ) // point B
+                else if ( (entree == 0b00011111) && partie == "PartieA") // point B
                 {
                     moteur.arreterMoteur();
                     point_B_ = true ;
@@ -243,7 +193,7 @@ void DetecteurLigne::detecterLigne()
                 
                 else {
                     moteur.avancerMoteur(140,147);
-                    _delay_ms(270);
+                    //_delay_ms(270);
                     while (true)
                     {
                         moteur.tournerGauche90();
@@ -263,13 +213,13 @@ void DetecteurLigne::detecterLigne()
                 _delay_ms(250);
                 masquerEntree();
 
-                if ((entree == 0b00011111) && (point_B_)) // Point S
+                if ((entree == 0b00011111) && partie == "PartieB") // Point S
                 {
                     moteur.avancerMoteur();
                     point_S_ = true ;
                 }
 
-                else if ( (entree == 0b00011111) && !(point_B_) ) // point B
+                else if ( (entree == 0b00011111) && partie == "PartieA") // point B
                 {
                     moteur.arreterMoteur();
                     point_B_ = true ;
@@ -278,7 +228,7 @@ void DetecteurLigne::detecterLigne()
                 
                 else {
                     moteur.avancerMoteur(140,147);
-                    _delay_ms(270);
+                    //_delay_ms(270);
                     while (true)
                     {
                         moteur.tournerGauche90();
@@ -297,15 +247,16 @@ void DetecteurLigne::detecterLigne()
                 _delay_ms(250);
                 masquerEntree();
 
-                if ((entree == 0b00011111) && (point_B_)) // Point S
+                if ((entree == 0b00011111) && partie == "PartieB") // Point S
                 {
                     moteur.avancerMoteur();
                     point_S_ = true ;
                 }
 
-                else if(entree == 0b00000000) 
+                else if ( (entree == 0b00011111) && partie == "PartieA") // point B
                 {
-                    doubleChemin = true ;
+                    moteur.arreterMoteur();
+                    point_B_ = true ;
                 }
 
                 else if ( (entree == 0b00011111) && !(point_B_) ) // point B
@@ -318,7 +269,7 @@ void DetecteurLigne::detecterLigne()
                 
                 else {
                     moteur.avancerMoteur(140,147);
-                    _delay_ms(270);
+                    //_delay_ms(270);
                     while (true)
                     {
                         moteur.tournerDroite90();
@@ -336,13 +287,13 @@ void DetecteurLigne::detecterLigne()
                 _delay_ms(250);
                 masquerEntree();
 
-                if ((entree == 0b00011111) && (point_B_)) // Point S
+                if ((entree == 0b00011111) && partie == "PartieB") // Point S
                 {
                     moteur.avancerMoteur();
                     point_S_ = true ;
                 }
 
-                else if ( (entree == 0b00011111) && !(point_B_) ) // point B
+                else if ( (entree == 0b00011111) && partie == "PartieA") // point B
                 {
                     moteur.arreterMoteur();
                     point_B_ = true ;
@@ -350,7 +301,7 @@ void DetecteurLigne::detecterLigne()
                 
                 else {
                     moteur.avancerMoteur(140,147);
-                    _delay_ms(270);
+                    //_delay_ms(270);
                     while (true)
                     {
                         moteur.tournerDroite90();

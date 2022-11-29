@@ -21,7 +21,7 @@ void Moteur::changementVitesse(uint16_t duree1, uint16_t duree2)
 void Moteur::avancerMoteur()
 {
     PORTD &= ~((1<<PD2) | (1<<PD3));
-    changementVitesse(110,120);// 144,130
+    changementVitesse(100,110);// 144,130
     //changementVitesse(50,152);
 }
 
@@ -51,30 +51,19 @@ void Moteur::arreterMoteur()
 
 void Moteur::tournerDroite90()
 {
-    // PORTD &= ~((1<<PD2) | (1<<PD3));
-    // Moteur::avancerMoteur();
-    // _delay_ms(40);
-    // changementVitesse(0,142);
-    // _delay_ms(1250);
-    // arreterMoteur();
+   
+    //_delay_ms(50);
     PORTD &= ~((1<<PD2) | (1<<PD3));
-    changementVitesse(0,125);
+    changementVitesse(30,97);
     
 }
 
 void Moteur::tournerGauche90()
 {
     
-
-    
-    // PORTD &= ~((1<<PD2) | (1<<PD3));
-    // Moteur::avancerMoteur();
-    // _delay_ms(110);
-    // changementVitesse(142,0);
-    // _delay_ms(1000);
-    // arreterMoteur();
+    _delay_ms(50);
     PORTD &= ~((1<<PD2) | (1<<PD3));
-    changementVitesse(125,0);
+    changementVitesse(85,30);
     
     
 }

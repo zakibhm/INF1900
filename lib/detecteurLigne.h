@@ -17,9 +17,9 @@ public :
 
     ~DetecteurLigne();
 
-    void detecterLigne();
+    void detecterLigne(char* partie);
 
-    void detecterLigne2();
+    //void detecterLigne2();
 
     bool getMoteurArrete();
 
@@ -44,13 +44,7 @@ private :
     const uint8_t masque = 0x1f ;
     uint8_t entree ;
     bool doubleChemin = false ;
-    // void lireCapteur() ;
-    // uint8_t capteur1 = (PINC & 16);
-    // uint8_t capteur2 = (PINC & 8) ;
-    // uint8_t capteur3 = (PINC & 4) ;
-    // uint8_t capteur4 = (PINC & 2) ;
-    // uint8_t capteur5 = (PINC & 1) ;
-    // uint8_t delCompteur = 0 ;
+    
 
 
 };

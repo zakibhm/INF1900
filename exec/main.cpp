@@ -277,16 +277,21 @@ int main()
     son.arreterSon();
     //robot.partieB();
     DetecteurLigne dec ;
+    DetecteurDistance decD ;
     Del del ;
     Moteur moteur ;
     //moteur.avancerMoteur();
     //_delay_ms(10000);
     //del.rouge(&PORTB);
-    while (true)
+    while(true)
     {
-        //del.rouge(&PORTB);
-        dec.detecterLigne();
+        decD.detecterBar();
     }
+    // while (true)
+    // {
+    //     //del.rouge(&PORTB);
+    //     dec.detecterLigne("PartieA");
+    // }
 
     return 0 ;
 }
