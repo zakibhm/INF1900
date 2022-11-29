@@ -34,6 +34,10 @@ public :
 
     bool getDoublechemin();
 
+    uint8_t* getTabBarrieres();
+
+    void setDoublechemin(bool var);
+
 private :
 
      
@@ -51,7 +55,7 @@ private :
     Son sonnerie;
     Uart uart ;
     can convertisseurAnalogique ; 
-    int tableaux_des_barrieres[3]={0,0,0};
+    uint8_t tableaux_des_barrieres[3]={0,0,0};
     uint8_t distance ;
     uint8_t conteurBarr = 0;
     double frequence[37] {

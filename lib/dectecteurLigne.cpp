@@ -27,7 +27,10 @@ bool DetecteurLigne::getDoublechemin()
     return doubleChemin ;
 }
 
-
+void DetecteurLigne::setDoublechemin(bool var)
+{
+    doubleChemin = var ;
+}
 
 
 bool DetecteurLigne::getPoint_S()
@@ -42,6 +45,11 @@ bool DetecteurLigne::getPoint_B()
 
 Son son ;
 
+uint8_t* DetecteurLigne::getTabBarrieres()
+{
+    return tableaux_des_barrieres ;
+}
+
 
 
 void DetecteurLigne::detecteurDistance()
@@ -53,9 +61,6 @@ void DetecteurLigne::detecteurDistance()
         somme+= distance ;
     }
     moyenne = int(somme/50) ;
-    //distance = (convertisseurAnalogique.lecture(0x00) >>2);
-    //uart.transmissionUART(moyenne);
-    //_delay_ms(500);
     switch (moyenne)
     {
         
@@ -78,7 +83,7 @@ void DetecteurLigne::detecteurDistance()
             else 
             {
                 moteur.arreterMoteur();
-                sonnerie.jouerSon(frequence[0]);
+                sonnerie.jouerSon(frequence[2]);
                 _delay_ms(1000);
                 sonnerie.arreterSon();
                 moteur.avancerMoteur(140,150);
@@ -95,7 +100,7 @@ void DetecteurLigne::detecteurDistance()
             del.vert(&PORTB);
 
             
-            sonnerie.jouerSon(frequence[2]);
+            sonnerie.jouerSon(frequence[5]);
             _delay_ms(1000);
             sonnerie.arreterSon();
             moteur.avancerMoteur(140,150);
@@ -106,7 +111,6 @@ void DetecteurLigne::detecteurDistance()
             break;
 
         default: // rien pour detecter 
-            //del.eteint(&PORTB);
             sonnerie.arreterSon() ;
             moteur.avancerMoteur();
 
@@ -115,12 +119,6 @@ void DetecteurLigne::detecteurDistance()
 
     }
 }
-
-
-
-
-
-
 
 
 void DetecteurLigne::detecterLigne(char* partie)
@@ -255,7 +253,7 @@ void DetecteurLigne::detecterLigne(char* partie)
                     
             case 0b0000111 : 
                 //del.rouge(&PORTB);
-                _delay_ms(250);
+                _delay_ms(150);
                 masquerEntree();
 
                 if ((entree == 0b00011111) && partie == "PartieB") // Point S
@@ -291,7 +289,7 @@ void DetecteurLigne::detecterLigne(char* partie)
 
             case 0b00001111 : 
                 
-                _delay_ms(250);
+                _delay_ms(150);
                 masquerEntree();
 
                 if ((entree == 0b00011111) && partie == "PartieB") // Point S
@@ -325,7 +323,7 @@ void DetecteurLigne::detecterLigne(char* partie)
 
             case 0b00011100 : 
                 //del.rouge(&PORTB);
-                _delay_ms(250);
+                _delay_ms(150);
                 masquerEntree();
 
                 if ((entree == 0b00011111) && partie == "PartieB") // Point S
@@ -365,7 +363,7 @@ void DetecteurLigne::detecterLigne(char* partie)
                 break;  
 
             case 0b00011110 : 
-                _delay_ms(250);
+                _delay_ms(150);
                 masquerEntree();
 
                 if ((entree == 0b00011111) && partie == "PartieB") // Point S

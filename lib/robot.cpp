@@ -43,9 +43,18 @@ ISR ( TIMER0_COMPA_vect ) {
 
 }
 
-int* Robot::retournerTab()
+void Robot::ecrireTabMem(uint8_t* tableau)  
+{   
+    const uint16_t adresse =0x0000 ;
+    const uint8_t tailleTab = 3 ;
+    Memoire24CXXX memoire ;
+    memoire.ecriture(adresse,tableau, tailleTab);
+
+}
+
+uint8_t* Robot::retournerTab()
 {
-    int* tab_barrieres = detecteurDistance_.getTabBarrieres() ; // recuperer les donnees des barrieres pour continuer sur la partie B 
+    uint8_t* tab_barrieres = detecteurLigne_.getTabBarrieres() ; // recuperer les donnees des barrieres pour continuer sur la partie B 
     if(tab_barrieres[2] == 0) // si le robot n'a detecté que deux barrieres (pas barriers au milieu)
     {
         tab_barrieres[2] = tab_barrieres[1] ;
@@ -53,6 +62,17 @@ int* Robot::retournerTab()
 
     }
     return tab_barrieres ;
+}
+
+
+uint8_t* Robot::lectureTabMem()
+{
+    const uint16_t adresse =0x0000 ;
+    const uint8_t tailleTab = 3 ;
+    Memoire24CXXX memoire ;
+    uint8_t tableauMem[3] ;
+    memoire.lecture(adresse,tableauMem, tailleTab);
+    return tableauMem ;
 }
 
 
@@ -64,13 +84,16 @@ void Robot::pariteA()
         detecteurLigne_.detecterLigne("PartieA");
 
     }
+    ecrireTabMem(retournerTab()) ;
 }
 
 void Robot::partieB()
 {
     
     initialisation();
-    int tableau[3]= {1,2,1} ;
+
+    uint8_t tableau[3]= {1,2,1} ;
+    //uint8_t* tableauBarriere = lectureTabMem();
     enum class Partie{barriere_1,barriere_2,barriere_3,fin} ;
     Partie partieCourante = Partie::barriere_1 ;
     Del del ;
@@ -81,10 +104,11 @@ void Robot::partieB()
         switch (partieCourante)
         {
         case Partie::barriere_1 :
-            del.rouge(&PORTB);
+            
             detecteurLigne_.detecterLigne("PartieB");
             if (detecteurLigne_.getDoublechemin() )
             {
+                del.rouge(&PORTB);
                 partirMinuterie();
                 if(tableau[2] == 1) 
                 {
@@ -128,11 +152,6 @@ void Robot::partieB()
                     _delay_ms(1000) ;
                 }
                 partieCourante = Partie::barriere_3 ;
-            }
-            else
-            {
-                partieCourante = Partie::barriere_2 ;
-
             }
             break;
 

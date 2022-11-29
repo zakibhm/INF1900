@@ -61,7 +61,7 @@ void Moteur::tournerDroite90()
 void Moteur::tournerGauche90()
 {
     
-    _delay_ms(50);
+    //_delay_ms(50);
     PORTD &= ~((1<<PD2) | (1<<PD3));
     changementVitesse(85,30);
     
