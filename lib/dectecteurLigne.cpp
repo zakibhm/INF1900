@@ -40,12 +40,93 @@ bool DetecteurLigne::getPoint_B()
     return point_B_ ;
 }
 
+Son son ;
+
+
+
+void DetecteurLigne::detecteurDistance()
+{
+    int moyenne = 0,somme = 0 ;
+    for(int i =0;i<50;i++)
+    {
+        distance = (convertisseurAnalogique.lecture(0x00) >>2);
+        somme+= distance ;
+    }
+    moyenne = int(somme/50) ;
+    //distance = (convertisseurAnalogique.lecture(0x00) >>2);
+    //uart.transmissionUART(moyenne);
+    //_delay_ms(500);
+    switch (moyenne)
+    {
+        
+        case 27 ... 33: // [43cm - 53cm] loin //0x15 0x1C   30 ... 40
+            _delay_ms(40);
+            distance = (convertisseurAnalogique.lecture(0x00) >>2);
+            if(distance > 33)
+            {
+                moteur.arreterMoteur();
+                del.vert(&PORTB);
+                sonnerie.jouerSon(frequence[2]);
+                _delay_ms(1000);
+                sonnerie.arreterSon();
+                moteur.avancerMoteur(140,150);
+                _delay_ms(900);
+
+                tableaux_des_barrieres[conteurBarr] = 1 ;
+                conteurBarr++;
+            }
+            else 
+            {
+                moteur.arreterMoteur();
+                sonnerie.jouerSon(frequence[0]);
+                _delay_ms(1000);
+                sonnerie.arreterSon();
+                moteur.avancerMoteur(140,150);
+                _delay_ms(900);
+                del.rouge(&PORTB);
+                tableaux_des_barrieres[conteurBarr] = 2 ;
+                conteurBarr++;
+            }
+            
+            break;
+
+        case  34 ... 120 : // [11cm - 21cm] proche 0x40 0x5c     60 ... 77
+            moteur.arreterMoteur();
+            del.vert(&PORTB);
+
+            
+            sonnerie.jouerSon(frequence[2]);
+            _delay_ms(1000);
+            sonnerie.arreterSon();
+            moteur.avancerMoteur(140,150);
+            _delay_ms(900);
+
+            tableaux_des_barrieres[conteurBarr] = 1 ;
+            conteurBarr++;
+            break;
+
+        default: // rien pour detecter 
+            //del.eteint(&PORTB);
+            sonnerie.arreterSon() ;
+            moteur.avancerMoteur();
+
+            break;
+
+
+    }
+}
+
+
+
+
+
+
 
 
 void DetecteurLigne::detecterLigne(char* partie)
 
 {   
-    Son son ;
+    
     masquerEntree();
     switch (entree)
         {
@@ -110,7 +191,7 @@ void DetecteurLigne::detecterLigne(char* partie)
                 break;
 
             case 0b00001110 :
-                del.rouge(&PORTB);
+                // del.rouge(&PORTB);
                 moteur.avancerMoteur();
                 doubleChemin = true ;
                 break;
@@ -130,45 +211,45 @@ void DetecteurLigne::detecterLigne(char* partie)
 
             case 0b00011011 :
                 
-                son.jouerSon(110) ;
-                _delay_ms(300);
-                son.arreterSon();
+                // son.jouerSon(110) ;
+                // _delay_ms(300);
+                // son.arreterSon();
                 doubleChemin = true ;
                 break;
             case 0b00011101 :
                 
-                son.jouerSon(110) ;
-                _delay_ms(300);
-                son.arreterSon();
+                // son.jouerSon(110) ;
+                // _delay_ms(300);
+                // son.arreterSon();
                 doubleChemin = true ;
                 break;
             case 0b00010111 :
                 
-                son.jouerSon(110) ;
-                _delay_ms(300);
-                son.arreterSon();
+                // son.jouerSon(110) ;
+                // _delay_ms(300);
+                // son.arreterSon();
                 doubleChemin = true ;
                 break;
             case 0b00010011 :
                 
-                son.jouerSon(110) ;
-                _delay_ms(300);
-                son.arreterSon();
+                // son.jouerSon(110) ;
+                // _delay_ms(300);
+                // son.arreterSon();
                 doubleChemin = true ;
                 break;
             case 0b00011001 :
                 
-                son.jouerSon(110) ;
-                _delay_ms(300);
-                son.arreterSon();
+                // son.jouerSon(110) ;
+                // _delay_ms(300);
+                // son.arreterSon();
                 doubleChemin = true ;
                 break;
             
             case 0b00010001 :
                 
-                son.jouerSon(110) ;
-                _delay_ms(300);
-                son.arreterSon();
+                // son.jouerSon(110) ;
+                // _delay_ms(300);
+                // son.arreterSon();
                 doubleChemin = true ;
                 break ;
                     
@@ -243,7 +324,7 @@ void DetecteurLigne::detecterLigne(char* partie)
                 break;  
 
             case 0b00011100 : 
-                del.rouge(&PORTB);
+                //del.rouge(&PORTB);
                 _delay_ms(250);
                 masquerEntree();
 

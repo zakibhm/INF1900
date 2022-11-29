@@ -4,6 +4,7 @@
 #include <util/delay.h> 
 #include "Sonnerie.h"
 #include "Moteur.h"
+#include "Uart.h"
 #include "can.h"
 #include "Del.h"
 class DetecteurDistance
@@ -28,7 +29,7 @@ private:
     Del del ;
     can convertisseurAnalogique ; 
     int tableaux_des_barrieres[3]={0,0,0};
-    uint8_t gdistance ;
+    uint8_t distance ;
     uint8_t conteurBarr = 0;
     double frequence[37] {
     110,116.54,123.47,130.81,138.59,146.83,
