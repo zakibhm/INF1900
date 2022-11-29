@@ -46,7 +46,7 @@ private :
     DetecteurDistance detecteurDistance_ ;
     DetecteurLigne detecteurLigne_ ;
     Moteur moteur_ ;
-    int duree = 7500;
+    int duree = 7812;
     //Memoire24CXXX memoire ;
 
 };

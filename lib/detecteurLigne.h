@@ -20,7 +20,7 @@ public :
 
     void detecteurDistance() ;
 
-    void detecterLigne(char* partie);
+    void detecterLigne(char* partie,char* direction);
 
     //void detecterLigne2();
 
@@ -29,6 +29,8 @@ public :
     void setMoteurArrete(bool valeure);
 
     bool getPoint_S() ;
+
+    void setPoint_S(bool valeure) ;
 
     bool getPoint_B() ;
 

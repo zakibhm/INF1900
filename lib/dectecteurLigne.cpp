@@ -38,6 +38,11 @@ bool DetecteurLigne::getPoint_S()
     return point_S_ ;
 }
 
+void DetecteurLigne::setPoint_S(bool valeure)
+{
+    point_S_ = valeure;
+}
+
 bool DetecteurLigne::getPoint_B()
 {
     return point_B_ ;
@@ -65,17 +70,17 @@ void DetecteurLigne::detecteurDistance()
     {
         
         case 27 ... 33: // [43cm - 53cm] loin //0x15 0x1C   30 ... 40
-            _delay_ms(40);
+            _delay_ms(45);
             distance = (convertisseurAnalogique.lecture(0x00) >>2);
             if(distance > 33)
             {
                 moteur.arreterMoteur();
                 del.vert(&PORTB);
                 sonnerie.jouerSon(frequence[2]);
-                _delay_ms(1000);
+                _delay_ms(1100);
                 sonnerie.arreterSon();
                 moteur.avancerMoteur(140,150);
-                _delay_ms(900);
+                _delay_ms(1000);
 
                 tableaux_des_barrieres[conteurBarr] = 1 ;
                 conteurBarr++;
@@ -83,7 +88,7 @@ void DetecteurLigne::detecteurDistance()
             else 
             {
                 moteur.arreterMoteur();
-                sonnerie.jouerSon(frequence[2]);
+                sonnerie.jouerSon(frequence[5]);
                 _delay_ms(1000);
                 sonnerie.arreterSon();
                 moteur.avancerMoteur(140,150);
@@ -121,7 +126,7 @@ void DetecteurLigne::detecteurDistance()
 }
 
 
-void DetecteurLigne::detecterLigne(char* partie)
+void DetecteurLigne::detecterLigne(char* partie, char* direction)
 
 {   
     
@@ -271,15 +276,18 @@ void DetecteurLigne::detecterLigne(char* partie)
                 
                 
                 else {
-                    moteur.avancerMoteur(140,147);
-                    //_delay_ms(270);
-                    while (true)
+                    if(direction == "Gauche" || direction == "deuxDirection")
                     {
-                        moteur.tournerGauche90();
-                        entree = PINC ;
-                        entree &= 0x1f & entree ;
-                        if(entree & 0x04)
-                            break ;
+                        moteur.avancerMoteur(140,147);
+                        //_delay_ms(270);
+                        while (true)
+                        {
+                            moteur.tournerGauche90();
+                            entree = PINC ;
+                            entree &= 0x1f & entree ;
+                            if(entree & 0x04)
+                                break ;
+                    }
                     }
                     
                 }
@@ -306,15 +314,18 @@ void DetecteurLigne::detecterLigne(char* partie)
 
                 
                 else {
-                    moteur.avancerMoteur(140,147);
-                    //_delay_ms(270);
-                    while (true)
+                    if(direction == "Gauche" || direction == "deuxDirection")
                     {
-                        moteur.tournerGauche90();
-                        entree = PINC ;
-                        entree &= 0x1f & entree ;
-                        if(entree & 0x04)
-                            break ;
+                        moteur.avancerMoteur(140,147);
+                        //_delay_ms(270);
+                        while (true)
+                        {
+                            moteur.tournerGauche90();
+                            entree = PINC ;
+                            entree &= 0x1f & entree ;
+                            if(entree & 0x04)
+                                break ;
+                    }
                     }
                     
                 }
@@ -347,15 +358,18 @@ void DetecteurLigne::detecterLigne(char* partie)
                 
                 
                 else {
-                    moteur.avancerMoteur(140,147);
-                    //_delay_ms(270);
-                    while (true)
+                    if(direction == "Droite" || direction == "deuxDirection")
                     {
-                        moteur.tournerDroite90();
-                        entree = PINC ;
-                        entree &= 0x1f & entree ;
-                        if(entree & 0x04)
-                            break ;
+                        moteur.avancerMoteur(140,147);
+                        //_delay_ms(270);
+                        while (true)
+                        {
+                            moteur.tournerDroite90();
+                            entree = PINC ;
+                            entree &= 0x1f & entree ;
+                            if(entree & 0x04)
+                                break ;
+                    }
                     }
                     
                 }
@@ -379,15 +393,18 @@ void DetecteurLigne::detecterLigne(char* partie)
                 }
                 
                 else {
-                    moteur.avancerMoteur(140,147);
-                    //_delay_ms(270);
-                    while (true)
+                    if(direction == "Droite" || direction == "deuxDirection")
                     {
-                        moteur.tournerDroite90();
-                        entree = PINC ;
-                        entree &= 0x1f & entree ;
-                        if(entree & 0x04)
-                            break ;
+                        moteur.avancerMoteur(140,147);
+                        //_delay_ms(270);
+                        while (true)
+                        {
+                            moteur.tournerDroite90();
+                            entree = PINC ;
+                            entree &= 0x1f & entree ;
+                            if(entree & 0x04)
+                                break ;
+                    }
                     }
                     
                 }

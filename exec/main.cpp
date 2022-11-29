@@ -32,40 +32,44 @@ int main()
     // int tableau[3]= {1,2,1} ;
     // enum class Partie{barriere_1,barriere_2,barriere_3,fin} ;
     // Partie partieCourante = Partie::barriere_1 ;
-    // Del del ;
-    // while(!(detecteurLigne_.getPoint_S()))
+    Del del ;
+    
+    Moteur moteur ;
+    // while(true)
     // {
-        
-    //     switch (partieCourante)
-    //     {
-    //     case Partie::barriere_1 :
-    //         del.rouge(&PORTB);
-    //         detecteurLigne_.detecterLigne();
-    //         break ;
-    //     default :
-    //         break ;
-    //     }
+    //     moteur.avancerMoteur();
     // }
+    
+    //_delay_ms(5000);
     Robot robot ;
     //robot.pariteA();
-    Son son ;
+    //moteur.avancerMoteur();
+    //_delay_ms(500);
+    //del.vert(&PORTB);
+    //_delay_ms(10000);
+    //robot.pariteA();
+    //moteur.avancerMoteur();
+    //_delay_ms(2000);
+    //robot.pariteA();
+    robot.partieB();
+    // Son son ;
     
-    son.arreterSon();
-    //robot.partieB();
-    DetecteurLigne dec ;
-    DetecteurDistance decD ;
-    Del del ;
-    Moteur moteur ;
+    // son.arreterSon();
+    // //robot.partieB();
+    // DetecteurLigne dec ;
+    // DetecteurDistance decD ;
+    // Del del ;
+    
     //moteur.tournerDroite(0,150);
     //_delay_ms(5000);
     //moteur.avancerMoteur();
     //_delay_ms(10000);
     //del.rouge(&PORTB);
-    while(true)
-    {
-        dec.detecteurDistance();
-        dec.detecterLigne("PartieA");
-    }
+    // while(true)
+    // {
+    //     dec.detecteurDistance();
+    //     dec.detecterLigne("PartieA");
+    // }
     // while (true)
     // {
     //     //del.rouge(&PORTB);

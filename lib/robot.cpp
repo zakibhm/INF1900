@@ -17,29 +17,30 @@ Robot::~Robot()
 
 
 void Robot::partirMinuterie () {
-    
-    TCNT0 = 0 ;
-
-    OCR0A = duree;
-    TCCR0A |= (1<<WGM12)|(1<<WGM12);
-    
-
-    TCCR0B |= (1<<CS12)|(1<<CS10);
-
-    TIMSK0 |=(1<<OCIE1A);
-}
-
-
-void Robot::initialisation ( void ) {
-    cli ();//disabling all external interruptions 
-    EIMSK |= (1 << INT0); //Dit au microcontroleur quil px se faire interrompre
-    EICRA |= (1 << ISC00)|(1<<ISC01); //Dit au microcontroleur quil px se faire interrompre que par des fronts montants/descendants
     sei ();
+    TCNT1 = 0 ;
+
+    OCR1A = duree;
+    TCCR1A |= (1<<WGM12)|(1<<WGM12);
+    
+
+    TCCR1B |= (1<<CS12)|(1<<CS10);
+
+    TIMSK1 |=(1<<OCIE1A);
 }
 
 
-ISR ( TIMER0_COMPA_vect ) {
-    gMinuterieExpiree = 1;
+// void Robot::initialisation ( void ) {
+//     cli ();//disabling all external interruptions 
+//     EIMSK |= (1 << INT0); //Dit au microcontroleur quil px se faire interrompre
+//     EICRA |= (1 << ISC00)|(1<<ISC01); //Dit au microcontroleur quil px se faire interrompre que par des fronts montants/descendants
+//     sei ();
+// }
+
+
+ISR ( TIMER1_COMPA_vect ) {
+    TCNT1 = 0 ;
+    gMinuterieExpiree += 1;
 
 }
 
@@ -80,8 +81,8 @@ void Robot::pariteA()
 {
     while (!(detecteurLigne_.getPoint_B()))
     {
-        detecteurDistance_.detecterBar();
-        detecteurLigne_.detecterLigne("PartieA");
+        detecteurLigne_.detecteurDistance();
+        detecteurLigne_.detecterLigne("PartieA","deuxDirection");
 
     }
     ecrireTabMem(retournerTab()) ;
@@ -89,46 +90,64 @@ void Robot::pariteA()
 
 void Robot::partieB()
 {
-    
-    initialisation();
-
     uint8_t tableau[3]= {1,2,1} ;
+    bool gauche = false,droite = false ;
     //uint8_t* tableauBarriere = lectureTabMem();
-    enum class Partie{barriere_1,barriere_2,barriere_3,fin} ;
+    enum class Partie {barriere_1,barriere_2,barriere_3,fin};
     Partie partieCourante = Partie::barriere_1 ;
     Del del ;
     Son son ;
+    //del.vert(&PORTB);
+    // if(!(detecteurLigne_.getPoint_S()))
+    //     del.rouge(&PORTB);
+    //      _delay_ms(3000) ;
+    
+    //detecteurLigne_.setPoint_S(flase)
     while(!(detecteurLigne_.getPoint_S()))
     {
         
         switch (partieCourante)
         {
         case Partie::barriere_1 :
-            
-            detecteurLigne_.detecterLigne("PartieB");
+            del.vert(&PORTB);
+            detecteurLigne_.detecterLigne("PartieB","deuxDirection");
             if (detecteurLigne_.getDoublechemin() )
             {
                 del.rouge(&PORTB);
                 partirMinuterie();
                 if(tableau[2] == 1) 
                 {
-                    son.jouerSon(110) ;
+                    //son.jouerSon(110) ;
                     moteur_.tournerDroite90();
-                    _delay_ms(300) ;
+                    _delay_ms(400) ;
+                    droite =  true ;
                 }
                 else
                 {
                     moteur_.tournerGauche90();
-                    _delay_ms(300) ;
+                    _delay_ms(400) ;
+                    gauche = true ;
                 }
+                detecteurLigne_.setDoublechemin(false) ;
+                partieCourante = Partie::barriere_2 ;
             }
-            partieCourante = Partie::barriere_2 ;
+            
             break;
         
         case Partie::barriere_2 :
-            detecteurLigne_.detecterLigne("PartieB");
-            if(gMinuterieExpiree)
+            if (droite)
             {
+                detecteurLigne_.detecterLigne("PartieB","Droite");
+            }
+            else if (gauche)
+            {
+                detecteurLigne_.detecterLigne("PartieB","Gauche");
+            }
+            //detecteurLigne_.detecterLigne("PartieB");
+            if(gMinuterieExpiree == 15)
+            {
+                del.eteint(&PORTB);
+                _delay_ms(3000);
                 if(tableau[1] == 1)
                 {
                     moteur_.tournerGauche90();
@@ -155,15 +174,17 @@ void Robot::partieB()
             }
             break;
 
+            
+
 
         case Partie::barriere_3 :
-            detecteurLigne_.detecterLigne("PartieB");
+            detecteurLigne_.detecterLigne("PartieB","deuxDirection");
             if (detecteurLigne_.getDoublechemin() )
             {
                 if(tableau[0] == 1) 
                 {
-                    del.vert(&PORTB);
-                    son.jouerSon(110) ;
+                    //del.vert(&PORTB);
+                    //son.jouerSon(110) ;
                     moteur_.tournerDroite90();
                     _delay_ms(300) ;
                 }
@@ -172,21 +193,24 @@ void Robot::partieB()
                     moteur_.tournerGauche90();
                     _delay_ms(300) ;
                 }
+                partieCourante = Partie::fin ;
             }
 
-            partieCourante = Partie::fin ;
+            
             break;
 
         case Partie::fin :
-            detecteurLigne_.detecterLigne("PartieB");
+            detecteurLigne_.detecterLigne("PartieB","deuxDirection");
             break;
 
 
         default:
             break;
         }
-        del.eteint(&PORTB);
+        del.vert(&PORTB);
+        //del.eteint(&PORTB);
     }
+
 
 }
 
