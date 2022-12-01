@@ -26,6 +26,8 @@ int main()
     Del del ;
     Moteur moteur ;
     Robot robot ;
+    
+
     //robot.pariteA();
     robot.partieB();
 

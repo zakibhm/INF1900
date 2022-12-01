@@ -1,6 +1,7 @@
 #include "robot.h"
 
 uint8_t gMinuterieExpiree ;
+uint8_t gappellé1 = 0 ;
 const uint8_t modeEntree = 0x00 ;
 const uint8_t modeSortiee = 0xff ;
 
@@ -44,6 +45,8 @@ void Robot::partirMinuterie () {
 ISR ( TIMER1_COMPA_vect ) {
     TCNT1 = 0 ;
     gMinuterieExpiree += 1;
+    if(gMinuterieExpiree > 7) {gappellé1 = 1 ;}
+        
 
 }
 
@@ -93,56 +96,55 @@ void Robot::pariteA()
 
 void Robot::partieB()
 {
+    uint8_t entree ;
     uint8_t compteur = 0 ;
-    uint8_t tableau[3]= {1,2,1} ;
+    uint8_t tableau[3]= {2,2,1} ;
     bool gauche = false,droite = false ;
     //uint8_t* tableauBarriere = lectureTabMem();
-    enum class Partie {barriere_1,barriere_2,barriere_3,fin};
-    Partie partieCourante = Partie::barriere_1 ;
+    enum class Partie {debut,point_E,point__J,point_M,point_P,fin};
+    Partie partieCourante = Partie::debut ;
     Del del ;
     Son son ;
     Moteur moteur ;
-    //del.vert(&PORTB);
-    // if(!(detecteurLigne_.getPoint_S()))
-    //     del.rouge(&PORTB);
-    //      _delay_ms(3000) ;
-    
-    //detecteurLigne_.setPoint_S(flase)
     while(!(detecteurLigne_.getPoint_S()))
     {
         
         switch (partieCourante)
         {
-        case Partie::barriere_1 :
-            //del.vert(&PORTB);
+        case Partie::debut :
             detecteurLigne_.detecterLigne("PartieB","deuxDirection");
             if (detecteurLigne_.getDoublechemin() )
             {
-                del.rouge(&PORTB);
-                moteur.arreterMoteur();
-                _delay_ms(500);
-                del.eteint(&PORTB) ;
-                //partirMinuterie();
-                if(tableau[2] == 1) 
-                {
-                    //son.jouerSon(110) ;
-                    moteur_.tournerGauche(160,0);
-                    _delay_ms(1500);
-                    droite =  true ;
-                }
-                else
-                {
-                    moteur_.tournerGauche(160,0);
-                    _delay_ms(1500);
-                    gauche = true ;
-                }
-                partieCourante = Partie::barriere_2 ;
+                partieCourante = Partie::point_E ;
             }
             
             break;
+
+        case Partie::point_E :
+
+            del.rouge(&PORTB);
+            moteur.avancerMoteur();
+            _delay_ms(250);
+            del.eteint(&PORTB) ;
+            
+            if(tableau[0] == 1) 
+            {
+                detecteurLigne_.detecterDroite(true,"PartieB");
+                droite = true;
+
+            }
+            else 
+            {
+                detecteurLigne_.detecterGauche(true,"PartieB");
+                gauche = true ;
+            }
+            partirMinuterie();
+            detecteurLigne_.setMilieu(false) ;
+            partieCourante = Partie::point__J ;
+
+            break;
         
-        case Partie::barriere_2 :
-            //del.rouge(&PORTB);
+        case Partie::point__J :
             if (droite)
             {
                 detecteurLigne_.detecterLigne("PartieB","Droite");
@@ -151,97 +153,139 @@ void Robot::partieB()
             {
                 detecteurLigne_.detecterLigne("PartieB","Gauche");
             }
-            if(detecteurLigne_.getMilieu())
+            if(detecteurLigne_.getMilieu() && gMinuterieExpiree > 18)
             {
-                compteur++ ;
-                if(compteur == 3)
+                cli() ;
+                del.vert(&PORTB);
+                moteur.avancerMoteur();
+                _delay_ms(250);
+                del.eteint(&PORTB);
+                detecteurLigne_.setMilieu(false) ;
+                if(droite)
                 {
-                    del.vert(&PORTB);
-                    moteur.arreterMoteur();
-                    _delay_ms(500);
-                    partirMinuterie();
-                    del.eteint(&PORTB);
-                    }
-            }
-            if(gMinuterieExpiree == 4)
-            {
-                cli ();
-                moteur.arreterMoteur();
-                _delay_ms(1200);
-                if(tableau[1] == 1)
-                {
-                    moteur_.tournerGauche(160,0);
-                    _delay_ms(1200);
-                    moteur_.arreterMoteur();
-                    _delay_ms(1000) ;
-
-                    moteur_.tournerDroite(0,160);
-                    _delay_ms(1200);
+                    detecteurLigne_.detecterDroite(true,"PartieB_droite");
                 }
-
-                else if (tableau[1] == 2)
+                else if(gauche)
                 {
-                    moteur_.tournerDroite(0,160);
-                    _delay_ms(1200);
-                    moteur_.arreterMoteur();
-                    _delay_ms(1000) ;
+                    detecteurLigne_.detecterGauche(true,"PartieB_gauche");
+                }
+                partirMinuterie();
+                
+            }
 
-                    moteur_.tournerGauche(160,0);
-                    _delay_ms(1200);
+            if(gMinuterieExpiree == 6 && gappellé1)
+                {
+                    cli();
+                    moteur.arreterMoteur();
+                    _delay_ms(1500);
+                    if(tableau[1] == 1)
+                    {
+                        moteur_.tournerGauche(125,0);
+                        _delay_ms(600);
+                        moteur_.arreterMoteur();
+                        _delay_ms(1000) ;
+
+                        moteur_.tournerDroite(0,125);
+                        _delay_ms(600);
+                    }
+
+                    else if (tableau[1] == 2)
+                    {
+                        moteur_.tournerDroite(0,125);
+                        _delay_ms(600);
+                        moteur_.arreterMoteur();
+                        _delay_ms(1000) ;
+
+                        moteur_.tournerGauche(125,0);
+                        _delay_ms(520);
+                    }
+                    else
+                    {
+                        moteur_.reculerMoteur();
+                        _delay_ms(1000);
+                        moteur_.arreterMoteur();
+                        _delay_ms(1000) ;
+                    }
+                    partieCourante = Partie::point_M ;
+                    detecteurLigne_.setDoublechemin(false) ;
+                    gauche = false ;
+                    droite = false ;
+                    partirMinuterie();
+                }
+            
+
+            break;
+
+            
+
+
+        case Partie::point_M :
+            detecteurLigne_.detecterLigne("PartieB","deuxDirection");
+            if (detecteurLigne_.getDoublechemin() || gMinuterieExpiree == 6 )
+            {
+                cli();
+                del.rouge(&PORTB);
+                moteur.avancerMoteur();
+                _delay_ms(250);
+                del.eteint(&PORTB) ;
+                if(tableau[2] == 1) 
+                {
+                    detecteurLigne_.detecterDroite(true,"PartieB_droite");
+                    droite = true;
+
                 }
                 else
                 {
-                    moteur_.reculerMoteur();
-                    _delay_ms(1000);
-                    moteur_.arreterMoteur();
-                    _delay_ms(1000) ;
+                    detecteurLigne_.detecterGauche(true,"PartieB_gauche");
+                    gauche = true ;
                 }
-                partieCourante = Partie::barriere_3 ;
-                detecteurLigne_.setDoublechemin(false) ;
-                droite = false ;
-                gauche = false ;
+                partirMinuterie();
+                partieCourante = Partie::point_P ;
             }
 
+            
             break;
 
-            
-
-
-        case Partie::barriere_3 :
-            del.rouge(&PORTB);
-            detecteurLigne_.detecterLigne("PartieB","deuxDirection");
-            if (detecteurLigne_.getDoublechemin() )
+        case Partie::point_P :
+            if (droite)
             {
-                moteur.arreterMoteur();
-                _delay_ms(500);
-                if(tableau[0] == 1) 
-                {
-                    //del.vert(&PORTB);
-                    //son.jouerSon(110) ;
-                    moteur_.tournerDroite(0,160);
-                    _delay_ms(1500);
-
-                }
-                else 
-                {
-                    moteur_.tournerGauche(160,0);
-                    _delay_ms(1500);
-                }
-                partieCourante = Partie::fin ;
+                detecteurLigne_.detecterLigne("PartieB","Droite");
             }
-
-            
+            else if (gauche)
+            {
+                detecteurLigne_.detecterLigne("PartieB","Gauche");
+            }
+            if(detecteurLigne_.getMilieu() && gMinuterieExpiree > 14)
+            {
+                cli() ;
+                del.vert(&PORTB);
+                moteur.avancerMoteur();
+                _delay_ms(250);
+                del.eteint(&PORTB);
+                detecteurLigne_.setMilieu(false) ;
+                if(droite)
+                {
+                    detecteurLigne_.detecterDroite(true,"PartieB_droite");
+                }
+                else if(gauche)
+                {
+                    detecteurLigne_.detecterGauche(true,"PartieB_gauche");
+                }
+                partieCourante = Partie::fin ;  
+                
+            }
             break;
 
         case Partie::fin :
-            detecteurLigne_.detecterLigne("PartieB","Droite");
-            break;
+            detecteurLigne_.detecterLigne("PartieA","deuxDirection");
+            break ;
 
 
         default:
             break;
         }
     }
+    del.vert(&PORTB);
 
 }
 

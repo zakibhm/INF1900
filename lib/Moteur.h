@@ -25,6 +25,10 @@ public :
 
     void tournerGauche90();
 
+    void tournerGauche();
+
+    void tournerDroite();
+
     void tournerGauche(uint16_t duree1, uint16_t duree2);
 
     void tournerDroite(uint16_t duree1, uint16_t duree2);

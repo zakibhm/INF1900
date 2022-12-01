@@ -26,7 +26,7 @@ public :
 
     bool getMoteurArrete();
 
-    void setMoteurArrete(bool valeure);
+    void setMilieu(bool valeure);
 
     bool getPoint_S() ;
 
@@ -42,9 +42,17 @@ public :
 
     void setDoublechemin(bool var);
 
+    void detecterGauche(bool push, char* partie);
+
+    void detecterDroite(bool push, char* partie);
+
 private :
 
-     
+    void detecterGauche90(char* partie,char* direction);
+
+    void detecterDroite90(char* partie,char* direction);
+
+    void verifierDoubleChemin();
     
     void masquerEntree();
     const uint8_t modeEntree = 0x00 ;
