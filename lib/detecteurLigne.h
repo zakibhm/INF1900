@@ -36,6 +36,8 @@ public :
 
     bool getDoublechemin();
 
+    bool getMilieu();
+
     uint8_t* getTabBarrieres();
 
     void setDoublechemin(bool var);
@@ -53,7 +55,8 @@ private :
     const uint8_t masque = 0x1f ;
     uint8_t entree ;
     bool doubleChemin = false ;
-    
+    bool milieu =  false ;
+
     Son sonnerie;
     Uart uart ;
     can convertisseurAnalogique ; 
