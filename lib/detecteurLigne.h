@@ -46,6 +46,8 @@ public :
 
     void detecterDroite(bool push, char* partie);
 
+    void detecterZigZag();
+ 
 private :
 
     void detecterGauche90(char* partie,char* direction);
@@ -55,6 +57,7 @@ private :
     void verifierDoubleChemin();
     
     void masquerEntree();
+
     const uint8_t modeEntree = 0x00 ;
     Moteur moteur ;
     Del del ;

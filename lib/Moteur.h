@@ -19,6 +19,8 @@ public :
 
     void reculerMoteur();
 
+    void reculerMoteur(uint16_t duree1, uint16_t duree2) ;
+
     void arreterMoteur();
 
     void tournerDroite90();

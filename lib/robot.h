@@ -24,11 +24,15 @@ public :
 
     void partieC();
 
+    void stationnement();
+
     
 
     
 
 private :
+
+    //void stationner();
 
     uint8_t* retournerTab() ;
 

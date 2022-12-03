@@ -22,14 +22,21 @@
 
 int main()
 {
-    
     Del del ;
     Moteur moteur ;
     Robot robot ;
     
-
+    //del.rouge(&PORTB);
     //robot.pariteA();
     robot.partieB();
+    robot.partieC();
+    robot.stationnement();
+    // DetecteurLigne dec ;
+    // while(true)
+    // {
+    //     dec.detecterZigZag();
+    // }
+    
 
     return 0 ;
 }
