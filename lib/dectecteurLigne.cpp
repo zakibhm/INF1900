@@ -66,31 +66,30 @@ void DetecteurLigne::setMilieu(bool valeure)
     milieu = valeure ;
 }
 
-
 void DetecteurLigne::detecterGauche(bool push, char* partie)
 {
     if(push)
     {
         moteur.avancerMoteur();
-        _delay_ms(85);
+        _delay_ms(150);
         // if(partie == "PartieB")
         //     _delay_ms(150);
 
         if (partie == "PartieB_gauche")
-             _delay_ms(100);
+             _delay_ms(70);
     }
     while (true)
     {
         // _delay_ms(7);
         // moteur.tournerGauche90();
-        if(partie == "PartieB")
+        if(partie == "PartieB"|| partie == "PartieA" )
         {
-            _delay_ms(10);
+            _delay_ms(8);
             moteur.tournerGauche90();
         }
         else if (partie == "PartieB_droite")
         {
-            moteur.tournerDroite(115,0);
+            moteur.tournerGauche(115,0);
             //moteur.tournerGauche90();
         }
         masquerEntree();
@@ -100,29 +99,15 @@ void DetecteurLigne::detecterGauche(bool push, char* partie)
         }
             
     }
-
-    moteur.avancerMoteur(125,132);
-    if(push && (partie == "PartieA")){
-        _delay_ms(240);
-    }
-    else if (push && (partie == "PartieB"))
-    {
-        _delay_ms(240);
-    }
-
-    else if (push && (partie == "PartieB_gauche"))
-    {
-        _delay_ms(400);
-    }
 }
 
 void DetecteurLigne::detecterDroite(bool push, char* partie)
 
 { 
-    if(push)
+    if(push )
     {
         moteur.avancerMoteur();
-        _delay_ms(85);
+        _delay_ms(150);
         // if(partie == "PartieB")
         //     _delay_ms(150);
 
@@ -134,15 +119,15 @@ void DetecteurLigne::detecterDroite(bool push, char* partie)
     {
         //_delay_ms(7);
         //moteur.tournerDroite90();
-        if(partie == "PartieB")
+        if(partie == "PartieB" || partie == "PartieA")
         {
-            _delay_ms(10);
+            _delay_ms(8);
             moteur.tournerDroite90();
         }
         else if (partie == "PartieB_droite")
         {
             //moteur.tournerDroite90();
-            moteur.tournerDroite(0,115);
+            moteur.tournerDroite(0,116);
         }
         
         masquerEntree();
@@ -150,26 +135,58 @@ void DetecteurLigne::detecterDroite(bool push, char* partie)
                 break ;
         }     
     }
+        
+}
+
+
+
+void DetecteurLigne::detecterGaucheProfonde(bool push, char* partie)
+{
+    detecterGauche(push, partie) ;
+
+    // del.rouge(&PORTB);
+    // _delay_ms(300);
+    // del.eteint(&PORTB);
+    moteur.avancerMoteur(125,132);
+    if(push && (partie == "PartieA")){
+        _delay_ms(240);
+    }
+    else if (push && (partie == "PartieB"))
+    {
+        _delay_ms(200);
+    }
+
+    else if (push && (partie == "PartieB_gauche"))
+    {
+        _delay_ms(360);
+    }
+}
+
+void DetecteurLigne::detecterDroiteProfonde(bool push, char* partie)
+
+{ 
+    detecterDroite(push,partie);
+    // del.rouge(&PORTB);
+    // _delay_ms(300);
+    // del.eteint(&PORTB);
     moteur.avancerMoteur(125,132);
     if(push && (partie == "PartieA")){
         _delay_ms(240);
     }
     else if (push && (partie == "PartieB_droite"))
     {
-        _delay_ms(400);
+        _delay_ms(360);
     }
 
     else if (push && (partie == "PartieB"))
     {
-        _delay_ms(240);
+        _delay_ms(200);
     }
-
-    // else if (push && (partie == "PartieB_gauche"))
-    // {
-    //     _delay_ms(600);
-    // }
         
 }
+
+
+
 
 
 void DetecteurLigne::detecterGauche90(char* partie,char* direction)
@@ -195,7 +212,7 @@ void DetecteurLigne::detecterGauche90(char* partie,char* direction)
     { 
         // del.rouge(&PORTB);
         // _delay_ms(2000);
-        detecterGauche(true,partie) ;
+        detecterGaucheProfonde(true,partie) ;
     }
 }
 
@@ -221,7 +238,7 @@ void DetecteurLigne::detecterDroite90(char* partie,char* direction)
 
     else if(direction == "deuxDirection" || direction == "Droite")
     { 
-        detecterDroite(true,partie);
+        detecterDroiteProfonde(true,partie);
     }
 }
 
@@ -253,13 +270,6 @@ void DetecteurLigne::detecterZigZag(){
     
     }
 }
-
-
-
-
-
-
-
 
 
 

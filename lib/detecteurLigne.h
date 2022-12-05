@@ -42,6 +42,10 @@ public :
 
     void setDoublechemin(bool var);
 
+    void detecterGaucheProfonde(bool push, char* partie);
+
+    void detecterDroiteProfonde(bool push, char* partie);
+
     void detecterGauche(bool push, char* partie);
 
     void detecterDroite(bool push, char* partie);
