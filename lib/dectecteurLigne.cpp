@@ -66,9 +66,10 @@ void DetecteurLigne::setMilieu(bool valeure)
     milieu = valeure ;
 }
 
+
 void DetecteurLigne::detecterGauche(bool push, char* partie)
 {
-    if(push)
+    if(push )
     {
         moteur.avancerMoteur();
         _delay_ms(150);
@@ -84,7 +85,7 @@ void DetecteurLigne::detecterGauche(bool push, char* partie)
         // moteur.tournerGauche90();
         if(partie == "PartieB"|| partie == "PartieA" )
         {
-            _delay_ms(8);
+            //_delay_ms(8);
             moteur.tournerGauche90();
         }
         else if (partie == "PartieB_droite")
@@ -98,6 +99,22 @@ void DetecteurLigne::detecterGauche(bool push, char* partie)
                 break ;
         }
             
+    }
+    // del.rouge(&PORTB);
+    // _delay_ms(300);
+    // del.eteint(&PORTB);
+    moteur.avancerMoteur(125,132);
+    if(push && (partie == "PartieA")){
+        _delay_ms(240);
+    }
+    else if (push && (partie == "PartieB"))
+    {
+        _delay_ms(200);
+    }
+
+    else if (push && (partie == "PartieB_gauche"))
+    {
+        _delay_ms(360);
     }
 }
 
@@ -121,7 +138,7 @@ void DetecteurLigne::detecterDroite(bool push, char* partie)
         //moteur.tournerDroite90();
         if(partie == "PartieB" || partie == "PartieA")
         {
-            _delay_ms(8);
+            //_delay_ms(8);
             moteur.tournerDroite90();
         }
         else if (partie == "PartieB_droite")
@@ -135,37 +152,6 @@ void DetecteurLigne::detecterDroite(bool push, char* partie)
                 break ;
         }     
     }
-        
-}
-
-
-
-void DetecteurLigne::detecterGaucheProfonde(bool push, char* partie)
-{
-    detecterGauche(push, partie) ;
-
-    // del.rouge(&PORTB);
-    // _delay_ms(300);
-    // del.eteint(&PORTB);
-    moteur.avancerMoteur(125,132);
-    if(push && (partie == "PartieA")){
-        _delay_ms(240);
-    }
-    else if (push && (partie == "PartieB"))
-    {
-        _delay_ms(200);
-    }
-
-    else if (push && (partie == "PartieB_gauche"))
-    {
-        _delay_ms(360);
-    }
-}
-
-void DetecteurLigne::detecterDroiteProfonde(bool push, char* partie)
-
-{ 
-    detecterDroite(push,partie);
     // del.rouge(&PORTB);
     // _delay_ms(300);
     // del.eteint(&PORTB);
@@ -184,9 +170,6 @@ void DetecteurLigne::detecterDroiteProfonde(bool push, char* partie)
     }
         
 }
-
-
-
 
 
 void DetecteurLigne::detecterGauche90(char* partie,char* direction)
@@ -212,7 +195,7 @@ void DetecteurLigne::detecterGauche90(char* partie,char* direction)
     { 
         // del.rouge(&PORTB);
         // _delay_ms(2000);
-        detecterGaucheProfonde(true,partie) ;
+        detecterGauche(true,partie) ;
     }
 }
 
@@ -238,7 +221,7 @@ void DetecteurLigne::detecterDroite90(char* partie,char* direction)
 
     else if(direction == "deuxDirection" || direction == "Droite")
     { 
-        detecterDroiteProfonde(true,partie);
+        detecterDroite(true,partie);
     }
 }
 
@@ -270,6 +253,13 @@ void DetecteurLigne::detecterZigZag(){
     
     }
 }
+
+
+
+
+
+
+
 
 
 
@@ -455,6 +445,7 @@ void DetecteurLigne::detecterLigne(char* partie, char* direction)
                 detecterDroite90(partie,direction);
                 break;  
             case 0b00011111 : 
+                milieu = true ;
                 if (partie == "PartieB")
                     detecterGauche90(partie,direction);   
             

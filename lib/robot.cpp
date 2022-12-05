@@ -210,7 +210,7 @@ void Robot::partieB()
                     if(tableau[1] == 1)
                     {
                         moteur_.tournerGauche(125,0);
-                        _delay_ms(710);
+                        _delay_ms(760);
                         moteur_.arreterMoteur();
                         _delay_ms(1000) ;
 
@@ -226,7 +226,7 @@ void Robot::partieB()
                         _delay_ms(1000) ;
 
                         moteur_.tournerGauche(125,0);
-                        _delay_ms(710);
+                        _delay_ms(760);
                     }
                     else
                     {
@@ -289,25 +289,25 @@ void Robot::partieB()
             // del.eteint(&PORTB);
             if (droite)
             {
-                detecteurLigne_.detecterLigne("PartieA","Droite");
+                detecteurLigne_.detecterLigne("PartieB_droite","Droite");
             }
             else if (gauche)
             {
-                detecteurLigne_.detecterLigne("PartieA","Gauche");
+                detecteurLigne_.detecterLigne("PartieB_gauche","Gauche");
             }
             detecteurLigne_.setPoint_S(false);
             if(detecteurLigne_.getMilieu() && gMinuterieExpiree > 18)
             {
                 //cli() ;
                 del.vert(&PORTB);
-                moteur.avancerMoteur(123,122);
-                _delay_ms(1000);
+                moteur.avancerMoteur();
+                _delay_ms(250);
                 del.eteint(&PORTB);
                 detecteurLigne_.setMilieu(false) ;
                 if(droite)
                 {
                     moteur_.tournerDroite(0,116);
-                    _delay_ms(500);
+                    _delay_ms(350);
                 }
                 else if(gauche)
                 {
