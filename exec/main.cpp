@@ -30,7 +30,7 @@ int main()
     //robot.pariteA();
     robot.partieB();
     robot.partieC();
-    robot.stationnement();
+    //robot.stationnement();
     // DetecteurLigne dec ;
     // while(true)
     // {
