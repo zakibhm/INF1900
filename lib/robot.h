@@ -9,7 +9,7 @@
 #include "DetecteurDistance.h"
 #include "detecteurLigne.h"
 #include <avr/interrupt.h>
-#include "memoire_24.h"
+#include <memoire_24.h>
 
 
 class Robot {
@@ -51,6 +51,6 @@ private :
     DetecteurLigne detecteurLigne_ ;
     Moteur moteur_ ;
     int duree = 3906;
-    //Memoire24CXXX memoire ;
+    Memoire24CXXX memoire ;
 
 };

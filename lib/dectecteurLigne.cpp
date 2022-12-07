@@ -3,7 +3,8 @@
 
 DetecteurLigne::DetecteurLigne() 
 {
-    DDRC = modeEntree;
+    DDRA = modeEntree;
+    //DDRA |= (1<< PA6) ;
     DDRB = 0xff ;
 }
 
@@ -17,7 +18,7 @@ DetecteurLigne::~DetecteurLigne()
 
 void DetecteurLigne::masquerEntree()
 {
-    entree = PINC ;
+    entree = PINA ;
     entree &= 0x1f & entree ;
 }
 
@@ -26,6 +27,7 @@ bool DetecteurLigne::getDoublechemin()
 {
     return doubleChemin ;
 }
+
 
 void DetecteurLigne::setDoublechemin(bool var)
 {
@@ -281,66 +283,77 @@ void DetecteurLigne::verifierDoubleChemin()
 void DetecteurLigne::detecteurDistance()
 {
     int moyenne = 0,somme = 0 ;
+    uint16_t adresseCompteur = 0x0004 ;
     for(int i =0;i<50;i++)
     {
-        distance = (convertisseurAnalogique.lecture(0x00) >>2);
+        distance = (convertisseurAnalogique.lecture(0x06) >>2);
         somme+= distance ;
     }
     moyenne = int(somme/50) ;
     switch (moyenne)
     {
         
-        case 27 ... 33: // [43cm - 53cm] loin //0x15 0x1C   30 ... 40
+        case 27 ... 33: // [43cm - 53cm] loin 
             _delay_ms(45);
-            distance = (convertisseurAnalogique.lecture(0x00) >>2);
+            distance = (convertisseurAnalogique.lecture(0x06) >>2);
             if(distance > 33)
             {
                 moteur.arreterMoteur();
                 del.vert(&PORTB);
-                sonnerie.jouerSon(frequence[2]);
+                sonnerie.jouerSon(frequence[10]);
                 _delay_ms(1100);
                 sonnerie.arreterSon();
-                moteur.avancerMoteur(140,150);
+                moteur.avancerMoteur(130,130);
                 _delay_ms(1000);
-
-                tableaux_des_barrieres[conteurBarr] = 1 ;
-                conteurBarr++;
+                uint8_t donnee = 1 ;
+                memoire_.ecriture(adresse,donnee);
+                tableaux_des_barrieres[compteurBarr_] = 1 ;
+                adresse++;
+                compteurBarr_++;
+                memoire_.ecriture(adresseCompteur,compteurBarr_) ;
             }
             else 
             {
                 moteur.arreterMoteur();
-                sonnerie.jouerSon(frequence[5]);
+                sonnerie.jouerSon(frequence[2]);
                 _delay_ms(1000);
                 sonnerie.arreterSon();
-                moteur.avancerMoteur(115,125);
-                _delay_ms(900);
+                moteur.avancerMoteur(130,130);
+                _delay_ms(1000);
                 del.rouge(&PORTB);
-                tableaux_des_barrieres[conteurBarr] = 2 ;
-                conteurBarr++;
+                uint8_t donnee = 2 ;
+                memoire_.ecriture(adresse,donnee);
+                tableaux_des_barrieres[compteurBarr_] = 2 ;
+                compteurBarr_++;
+                adresse++;
+                memoire_.ecriture(adresseCompteur,compteurBarr_) ;
             }
             
             break;
 
-        case  34 ... 120 : // [11cm - 21cm] proche 0x40 0x5c     60 ... 77
+        case  34 ... 120 : // [11cm - 21cm] proche 
             moteur.arreterMoteur();
             del.vert(&PORTB);
 
             
-            sonnerie.jouerSon(frequence[5]);
+            sonnerie.jouerSon(frequence[10]);
             _delay_ms(1000);
             sonnerie.arreterSon();
-            moteur.avancerMoteur(115,125);
-            _delay_ms(900);
-
-            tableaux_des_barrieres[conteurBarr] = 1 ;
-            conteurBarr++;
+            moteur.avancerMoteur(130,130);
+                _delay_ms(1000);
+            uint8_t donnee = 1 ;
+            memoire_.ecriture(adresse,donnee);
+            tableaux_des_barrieres[compteurBarr_] = 1 ;
+            compteurBarr_++;
+            adresse++;
+            memoire_.ecriture(adresseCompteur,compteurBarr_) ;
             break;
 
-        default: // rien pour detecter 
-            sonnerie.arreterSon() ;
-            moteur.avancerMoteur();
+        // default:
+        //     sonnerie.arreterSon() ;
+        //     moteur.avancerMoteur();
 
-            break;
+        //     break;
 
 
     }

@@ -32,7 +32,7 @@ ISR ( INT0_vect ) {
 }
 
 ISR ( INT1_vect ) {
-    _delay_ms(40);
+    _delay_ms(50);
     gBoutonPoussoirBoard += 1;   
 }
 

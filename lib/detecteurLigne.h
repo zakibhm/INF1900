@@ -7,6 +7,7 @@
 #include "can.h"
 #include "Del.h"
 #include "Uart.h"
+#include "memoire_24.h"
 
 
 
@@ -69,11 +70,12 @@ private :
     bool milieu =  false ;
 
     Son sonnerie;
-    Uart uart ;
+    Memoire24CXXX memoire_ ;
+    uint16_t adresse = 0x0000;
     can convertisseurAnalogique ; 
     uint8_t tableaux_des_barrieres[3]={0,0,0};
     uint8_t distance ;
-    uint8_t conteurBarr = 0;
+    uint8_t compteurBarr_ = 0;
     double frequence[37] {
     110,116.54,123.47,130.81,138.59,146.83,
     155.56,164.81,174.61,185.00,196.00,207.65,
