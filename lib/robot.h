@@ -44,10 +44,6 @@ private :
 
     void initialisation( void );
 
-
-
-
-    DetecteurDistance detecteurDistance_ ;
     DetecteurLigne detecteurLigne_ ;
     Moteur moteur_ ;
     int duree = 3906;

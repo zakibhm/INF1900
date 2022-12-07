@@ -75,39 +75,96 @@ uint8_t* Robot::lectureTabMem()
     uint16_t adresse =0x0000 ;
     uint16_t adresseCompteur =0x0004 ;
     uint8_t tableauMem[3] ;
-    uint8_t barr1_ptr;
-    uint8_t barr2_ptr;
-    uint8_t barr3_ptr;
+    uint8_t barr1;
+    uint8_t barr2;
+    uint8_t barr3;
     uint8_t compteurBarr ;
-    memoire.lecture(adresseCompteur,compteurBarr);
-    
+    memoire.lecture(adresseCompteur,&compteurBarr);
+    Del del ;
     if(compteurBarr == 3)
 
     {    
-        memoire.lecture(adresse,barr1_ptr);
+        del.rouge(&PORTB);
+        _delay_ms(1000);
+        del.eteint(&PORTB);
+        _delay_ms(1000);
+        memoire.lecture(adresse,&barr1);
         adresse+=1;
-        memoire.lecture(adresse,barr2_ptr);
+        memoire.lecture(adresse,&barr2);
         adresse+=1;
-        memoire.lecture(adresse,barr3_ptr);
-        tableauMem[0] = *barr1_ptr ;
-        tableauMem[1] = *barr2_ptr ;
-        tableauMem[2] = *barr3_ptr ;
+        memoire.lecture(adresse,&barr3);
+        tableauMem[0] = barr3;
+        tableauMem[1] = barr2;
+        tableauMem[2] = barr1;
+        // if(barr3 == 2)
+        // {
+        //     del.rouge(&PORTB);
+        //     _delay_ms(500);
+        //     del.eteint(&PORTB);
+        //     _delay_ms(500);
+        // }
+        // else if (barr3 == 1)
+        // {
+        //     del.vert(&PORTB);
+        //     _delay_ms(500);
+        //     del.eteint(&PORTB);
+        //     _delay_ms(500);
+        // }
+
+        // del.clignote(&PORTB,2000);
+
+        // if(barr2 == 2)
+        // {
+        //     del.rouge(&PORTB);
+        //     _delay_ms(500);
+        //     del.eteint(&PORTB);
+        //     _delay_ms(500);
+        // }
+        // else if (barr2 == 1)
+        // {
+        //     del.vert(&PORTB);
+        //     _delay_ms(500);
+        //     del.eteint(&PORTB);
+        //     _delay_ms(500);
+        // }
+
+        // del.clignote(&PORTB,2000);
+
+        // if(barr1 == 2)
+        // {
+        //     del.rouge(&PORTB);
+        //     _delay_ms(500);
+        //     del.eteint(&PORTB);
+        //     _delay_ms(500);
+        // }
+        // else if (barr1 == 1)
+        // {
+        //     del.vert(&PORTB);
+        //     _delay_ms(500);
+        //     del.eteint(&PORTB);
+        //     _delay_ms(500);
+        // }
+
+        // del.clignote(&PORTB,2000);
+
+
         }
     else if (compteurBarr == 2)
     {
-        memoire.lecture(adresse,barr1_ptr);
+        del.vert(&PORTB);
+        _delay_ms(1000);
+        del.eteint(&PORTB);
+        
+        memoire.lecture(adresse,&barr1);
         adresse+=1;
-        memoire.lecture(adresse,barr2_ptr);
-        tableauMem[0] = *barr1_ptr ;
+        memoire.lecture(adresse,&barr2);
+        tableauMem[0] = barr2 ;
         tableauMem[1] = 0 ;
-        tableauMem[2] = *barr2_ptr ;
+        tableauMem[2] = barr1 ;
     }
     else if (compteurBarr == 0)
         {
-            Del del ;
-            del.rouge(&PORTB);
-            _delay_ms(2000);
-            del.eteint(&PORTB);
+            del.clignote(&PORTB,2000);
         }
     return tableauMem ;
 }
@@ -128,16 +185,63 @@ void Robot::partieA()
 
 void Robot::partieB()
 {
-    
+    Del del ;
     uint8_t entree ;
     bool reculer = false ;
     uint8_t compteur = 0 ;
-    //uint8_t tableau[3]= {2,0,2} ;
+    uint8_t tableau[3]= {2,0,2} ;
     bool gauche = false,droite = false ;
-    uint8_t* tableau = lectureTabMem();
+    //uint8_t* tableau = lectureTabMem();
+    del.eteint(&PORTB);
+    _delay_ms(2000);
+    uint16_t adresse =0x0000 ;
+    uint16_t adresseCompteur =0x0004 ;
+    //uint8_t tableau[3] ;
+    uint8_t barr1;
+    uint8_t barr2;
+    uint8_t barr3;
+    uint8_t compteurBarr ;  
+    memoire.lecture(adresseCompteur,&compteurBarr);
+    if(compteurBarr == 3)
+
+    {    
+        del.rouge(&PORTB);
+        _delay_ms(250);
+        del.eteint(&PORTB);
+        memoire.lecture(adresse,&barr1);
+        adresse+=1;
+        memoire.lecture(adresse,&barr2);
+        adresse+=1;
+        memoire.lecture(adresse,&barr3);
+        tableau[0] = barr3;
+        tableau[1] = barr2;
+        tableau[2] = barr1;
+        //const uint8_t tableau[3] = {barr3,barr2,barr1};
+
+    }
+
+    else if (compteurBarr == 2)
+    {
+        del.vert(&PORTB);
+        _delay_ms(250);
+        del.eteint(&PORTB);
+        
+        memoire.lecture(adresse,&barr1);
+        adresse+=1;
+        memoire.lecture(adresse,&barr2);
+        tableau[0] = barr2 ;
+        tableau[1] = 0 ;
+        tableau[2] = barr1 ;
+        //const uint8_t tableau[3] = {barr2,0,barr1};
+    }
+    else
+    {
+        const uint8_t tableau[3] = {0,0,0};
+    }
+    
     enum class Partie {debut,point_E,point__J,point_M,point_P,fin};
     Partie partieCourante = Partie::debut ;
-    Del del ;
+    //Del del ;
     Son son ;
     Moteur moteur ;
     // moteur_.avancerMoteur(120,118);
@@ -169,7 +273,7 @@ void Robot::partieB()
                 droite = true;
 
             }
-            else 
+            else if(tableau[0] == 2) 
             {
                 detecteurLigne_.detecterGauche(true,"PartieB_gauche");
                 gauche = true ;
@@ -250,7 +354,7 @@ void Robot::partieB()
                         moteur_.tournerGauche(125,0);
                         _delay_ms(560);
                     }
-                    else
+                    else if (tableau[1] == 0)
                     {
                         moteur_.reculerMoteur();
                         _delay_ms(1000);
@@ -292,7 +396,7 @@ void Robot::partieB()
                     droite = true;
 
                 }
-                else
+                else if (tableau[2] == 2)
                 {
                     detecteurLigne_.detecterGauche(true,"PartieB_gauche");
                     gauche = true ;
@@ -319,7 +423,7 @@ void Robot::partieB()
                 detecteurLigne_.detecterLigne("PartieB_gauche","Gauche");
             }
             detecteurLigne_.setPoint_S(false);
-            if(detecteurLigne_.getMilieu() && gMinuterieExpiree > 17)
+            if(detecteurLigne_.getMilieu() && gMinuterieExpiree > 18)
             {
                 //cli() ;
                 del.vert(&PORTB);

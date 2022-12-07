@@ -302,12 +302,12 @@ void DetecteurLigne::detecteurDistance()
                 del.vert(&PORTB);
                 sonnerie.jouerSon(frequence[10]);
                 _delay_ms(1100);
+                del.eteint(&PORTB);
                 sonnerie.arreterSon();
-                moteur.avancerMoteur(130,130);
+                moteur.avancerMoteur(130,127);
                 _delay_ms(1000);
                 uint8_t donnee = 1 ;
                 memoire_.ecriture(adresse,donnee);
-                tableaux_des_barrieres[compteurBarr_] = 1 ;
                 adresse++;
                 compteurBarr_++;
                 memoire_.ecriture(adresseCompteur,compteurBarr_) ;
@@ -316,14 +316,15 @@ void DetecteurLigne::detecteurDistance()
             {
                 moteur.arreterMoteur();
                 sonnerie.jouerSon(frequence[2]);
+                del.rouge(&PORTB);
                 _delay_ms(1000);
                 sonnerie.arreterSon();
-                moteur.avancerMoteur(130,130);
+                del.eteint(&PORTB);
+                moteur.avancerMoteur(130,127);
                 _delay_ms(1000);
-                del.rouge(&PORTB);
+                
                 uint8_t donnee = 2 ;
                 memoire_.ecriture(adresse,donnee);
-                tableaux_des_barrieres[compteurBarr_] = 2 ;
                 compteurBarr_++;
                 adresse++;
                 memoire_.ecriture(adresseCompteur,compteurBarr_) ;
@@ -338,12 +339,12 @@ void DetecteurLigne::detecteurDistance()
             
             sonnerie.jouerSon(frequence[10]);
             _delay_ms(1000);
+            del.eteint(&PORTB);
             sonnerie.arreterSon();
-            moteur.avancerMoteur(130,130);
+            moteur.avancerMoteur(130,127);
                 _delay_ms(1000);
             uint8_t donnee = 1 ;
             memoire_.ecriture(adresse,donnee);
-            tableaux_des_barrieres[compteurBarr_] = 1 ;
             compteurBarr_++;
             adresse++;
             memoire_.ecriture(adresseCompteur,compteurBarr_) ;
