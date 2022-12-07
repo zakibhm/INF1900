@@ -350,7 +350,6 @@ void DetecteurLigne::detecteurDistance()
 void DetecteurLigne::detecterLigne(char* partie, char* direction)
 
 {   
-    
     masquerEntree();
     switch (entree)
         {

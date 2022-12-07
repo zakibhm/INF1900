@@ -18,6 +18,10 @@ public :
     
     void eteint(volatile uint8_t* port);
     
-    void ambre(volatile uint8_t* port);
+    void ambre(volatile uint8_t* port,int delai);
+
+    void clignote(volatile uint8_t* port, int delai);
+
+    bool antirebound_fonction() ;
 
 };

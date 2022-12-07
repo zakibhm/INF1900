@@ -18,7 +18,7 @@ public :
 
     ~Robot();
 
-    void pariteA();
+    void partieA();
 
     void partieB();
 

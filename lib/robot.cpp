@@ -94,8 +94,10 @@ uint8_t* Robot::lectureTabMem()
 }
 
 
-void Robot::pariteA()
+void Robot::partieA()
 {
+    moteur_.avancerMoteur(120,118);
+    _delay_ms(1000);
     while (!(detecteurLigne_.getPoint_B()))
     {
         detecteurLigne_.detecteurDistance();
@@ -118,6 +120,8 @@ void Robot::partieB()
     Del del ;
     Son son ;
     Moteur moteur ;
+    // moteur_.avancerMoteur(120,118);
+    // _delay_ms(1000);
     while(!(detecteurLigne_.getPoint_S()))
     {
         
@@ -234,16 +238,17 @@ void Robot::partieB()
                         _delay_ms(1000);
                         moteur_.arreterMoteur();
                         _delay_ms(1000) ;
-                        moteur.avancerMoteur(125,132);
+                        moteur.avancerMoteur(120,118);
                         _delay_ms(500) ;
                         //reculer = true ;
                     }
-                    partieCourante = Partie::point_M ;
+                    
                     detecteurLigne_.setDoublechemin(false) ;
                     gauche = false ;
                     droite = false ;
                     moteur.arreterMoteur();
                     _delay_ms(250);
+                    partieCourante = Partie::point_M ;
                     //partirMinuterie();
                 }
             
@@ -346,11 +351,9 @@ void Robot::partieC()
     uint8_t entree ;
     Del del ;
     Moteur moteur ;
-    partirMinuterie();
-    // moteur.arreterMoteur();
-    // _delay_ms(1000);
     moteur.avancerMoteur(110,110);
     _delay_ms(1000);
+    partirMinuterie();
     while(gMinuterieExpiree < 8)
     {  
         detecteurLigne_.detecterLigne("PartieA","deuxDirection");
@@ -401,6 +404,7 @@ void Robot::partieC()
     
     _delay_ms(1000);
     del.eteint(&PORTB);
+    stationnement();
         
 }
 
