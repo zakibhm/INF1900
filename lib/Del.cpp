@@ -22,13 +22,13 @@ bool Del::antirebound_fonction(){
 }
 void Del::clignote(volatile uint8_t* port, int delai)
 {
-    int n = int(delai/400);
+    int n = int(delai/250);
     for(uint8_t i = 0 ; i < n ; i++ )
     {
         rouge(port);
-        _delay_ms(200);
-        vert(port);
-        _delay_ms(200);
+        _delay_ms(125);
+        eteint(port);
+        _delay_ms(125);
     }
     eteint(port);
 }

@@ -1,7 +1,10 @@
 #include "Controleur.h"
 
 Controleur::Controleur()
-{}
+{
+    initialisationbreadBoard();
+    initialisationButtonPoussoir();
+}
 
 Controleur::~Controleur()
 {}
@@ -64,6 +67,7 @@ void Controleur::SelectionnerPartie()
                 {
                     del_.clignote(&PORTB,2000);
                     speedyFennec_.partieB();
+                    speedyFennec_.partieC();
                     gBoutonPoussoir = 0;
                 }
                 if(gBoutonPoussoirBoard == 2)
