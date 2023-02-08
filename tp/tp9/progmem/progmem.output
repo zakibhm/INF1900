@@ -1,0 +1,280 @@
+Terminaux inutilisés dans la grammaire
+
+    MAUVAISJETON
+
+
+Grammaire
+
+    0 $accept: instructions $end
+
+    1 instructions: %empty
+    2             | instructions instruction POINTVIRGULE
+    3             | instructions error POINTVIRGULE
+
+    4 instruction: mnemonique1
+    5            | mnemonique2 valeur
+
+    6 mnemonique1: DBT
+    7            | DET
+    8            | FIN
+    9            | SAR
+   10            | MAR
+   11            | TRD
+   12            | TRG
+   13            | DBC
+   14            | FBC
+
+   15 mnemonique2: ATT
+   16            | DAL
+   17            | SGO
+   18            | MAV
+   19            | MRE
+   20            | DBC
+
+   21 valeur: DONNEE
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+    $end (0) 0
+    error (256) 3
+    DBT (258) 6
+    FIN (259) 8
+    ATT (260) 15
+    DAL (261) 16
+    DET (262) 7
+    SGO (263) 17
+    SAR (264) 9
+    MAR (265) 10
+    MAV (266) 18
+    MRE (267) 19
+    TRD (268) 11
+    TRG (269) 12
+    DBC (270) 13 20
+    FBC (271) 14
+    DONNEE <typeString> (272) 21
+    POINTVIRGULE (273) 2 3
+    MAUVAISJETON (274)
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+    $accept (20)
+        à gauche: 0
+    instructions (21)
+        à gauche: 1 2 3
+        à droite: 0 2 3
+    instruction (22)
+        à gauche: 4 5
+        à droite: 2
+    mnemonique1 <typeInt> (23)
+        à gauche: 6 7 8 9 10 11 12 13 14
+        à droite: 4
+    mnemonique2 <typeInt> (24)
+        à gauche: 15 16 17 18 19 20
+        à droite: 5
+    valeur <typeInt> (25)
+        à gauche: 21
+        à droite: 5
+
+
+État 0
+
+    0 $accept: . instructions $end
+
+    $défaut  réduction par utilisation de la règle 1 (instructions)
+
+    instructions  aller à l'état 1
+
+
+État 1
+
+    0 $accept: instructions . $end
+    2 instructions: instructions . instruction POINTVIRGULE
+    3             | instructions . error POINTVIRGULE
+
+    $end   décalage et aller à l'état 2
+    error  décalage et aller à l'état 3
+    DBT    décalage et aller à l'état 4
+    FIN    décalage et aller à l'état 5
+    ATT    décalage et aller à l'état 6
+    DAL    décalage et aller à l'état 7
+    DET    décalage et aller à l'état 8
+    SGO    décalage et aller à l'état 9
+    SAR    décalage et aller à l'état 10
+    MAR    décalage et aller à l'état 11
+    MAV    décalage et aller à l'état 12
+    MRE    décalage et aller à l'état 13
+    TRD    décalage et aller à l'état 14
+    TRG    décalage et aller à l'état 15
+    DBC    décalage et aller à l'état 16
+    FBC    décalage et aller à l'état 17
+
+    instruction  aller à l'état 18
+    mnemonique1  aller à l'état 19
+    mnemonique2  aller à l'état 20
+
+
+État 2
+
+    0 $accept: instructions $end .
+
+    $défaut  accepter
+
+
+État 3
+
+    3 instructions: instructions error . POINTVIRGULE
+
+    POINTVIRGULE  décalage et aller à l'état 21
+
+
+État 4
+
+    6 mnemonique1: DBT .
+
+    $défaut  réduction par utilisation de la règle 6 (mnemonique1)
+
+
+État 5
+
+    8 mnemonique1: FIN .
+
+    $défaut  réduction par utilisation de la règle 8 (mnemonique1)
+
+
+État 6
+
+   15 mnemonique2: ATT .
+
+    $défaut  réduction par utilisation de la règle 15 (mnemonique2)
+
+
+État 7
+
+   16 mnemonique2: DAL .
+
+    $défaut  réduction par utilisation de la règle 16 (mnemonique2)
+
+
+État 8
+
+    7 mnemonique1: DET .
+
+    $défaut  réduction par utilisation de la règle 7 (mnemonique1)
+
+
+État 9
+
+   17 mnemonique2: SGO .
+
+    $défaut  réduction par utilisation de la règle 17 (mnemonique2)
+
+
+État 10
+
+    9 mnemonique1: SAR .
+
+    $défaut  réduction par utilisation de la règle 9 (mnemonique1)
+
+
+État 11
+
+   10 mnemonique1: MAR .
+
+    $défaut  réduction par utilisation de la règle 10 (mnemonique1)
+
+
+État 12
+
+   18 mnemonique2: MAV .
+
+    $défaut  réduction par utilisation de la règle 18 (mnemonique2)
+
+
+État 13
+
+   19 mnemonique2: MRE .
+
+    $défaut  réduction par utilisation de la règle 19 (mnemonique2)
+
+
+État 14
+
+   11 mnemonique1: TRD .
+
+    $défaut  réduction par utilisation de la règle 11 (mnemonique1)
+
+
+État 15
+
+   12 mnemonique1: TRG .
+
+    $défaut  réduction par utilisation de la règle 12 (mnemonique1)
+
+
+État 16
+
+   13 mnemonique1: DBC .
+   20 mnemonique2: DBC .
+
+    DONNEE    réduction par utilisation de la règle 20 (mnemonique2)
+    $défaut  réduction par utilisation de la règle 13 (mnemonique1)
+
+
+État 17
+
+   14 mnemonique1: FBC .
+
+    $défaut  réduction par utilisation de la règle 14 (mnemonique1)
+
+
+État 18
+
+    2 instructions: instructions instruction . POINTVIRGULE
+
+    POINTVIRGULE  décalage et aller à l'état 22
+
+
+État 19
+
+    4 instruction: mnemonique1 .
+
+    $défaut  réduction par utilisation de la règle 4 (instruction)
+
+
+État 20
+
+    5 instruction: mnemonique2 . valeur
+
+    DONNEE  décalage et aller à l'état 23
+
+    valeur  aller à l'état 24
+
+
+État 21
+
+    3 instructions: instructions error POINTVIRGULE .
+
+    $défaut  réduction par utilisation de la règle 3 (instructions)
+
+
+État 22
+
+    2 instructions: instructions instruction POINTVIRGULE .
+
+    $défaut  réduction par utilisation de la règle 2 (instructions)
+
+
+État 23
+
+   21 valeur: DONNEE .
+
+    $défaut  réduction par utilisation de la règle 21 (valeur)
+
+
+État 24
+
+    5 instruction: mnemonique2 valeur .
+
+    $défaut  réduction par utilisation de la règle 5 (instruction)
